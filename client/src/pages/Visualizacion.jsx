@@ -85,17 +85,20 @@ function Diagram() {
       // Definir la plantilla para los enlaces
       diagram.linkTemplate =
         make(go.Link,
-          make(go.Shape),
-          //{curve: go.Link.Bezier},
-          make(go.TextBlock,
+            make(go.Shape),
+            make(go.TextBlock,
             { segmentIndex: 0, segmentOffset: new go.Point(NaN, NaN),
-              segmentOrientation: go.Orientation.Upright },
-            new go.Binding("text", "startInterface")),
-          make(go.TextBlock,
+                segmentOrientation: go.Orientation.Upright },
+                new go.Binding("text", "startInterface", function(interfaz) {
+                    return InterfazAbreviada(interfaz); 
+            })),
+            make(go.TextBlock,
             { segmentIndex: -1, segmentOffset: new go.Point(NaN, NaN),
-              segmentOrientation: go.Orientation.Upright },
-            new go.Binding("text", "endInterface")),
-        );
+                segmentOrientation: go.Orientation.Upright },
+                new go.Binding("text", "endInterface", function(interfaz) {
+                    return InterfazAbreviada(interfaz);
+            })),
+      );
 
       let createdLinks = []; // Array para llevar un registro de los enlaces creados
       // Crear un layout Force-Directed
@@ -162,6 +165,25 @@ function Diagram() {
 
     init();
   }, []);
+
+  function InterfazAbreviada(interfazCompleta) {
+    const abreviaciones = {
+        "GigabitEthernet": "Gi",
+        "FastEthernet": "Fa",
+        "Serial": "Se"
+    };
+  
+    // Iterar sobre las claves del objeto
+    for (let prefix in abreviaciones) {
+        if (interfazCompleta.startsWith(prefix)) {
+            return abreviaciones[prefix] + interfazCompleta.slice(prefix.length);
+        }
+    }
+    return interfazCompleta;
+  }
+  
+  // Luego, en la definición de la plantilla de enlaces, puedes usar esta función para obtener la versión abreviada de las interfaces:
+  
 
   return (
     <div className='mainTopologia'>

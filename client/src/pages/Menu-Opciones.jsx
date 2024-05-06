@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import '../styles/menuOpciones.css';
 
 function ConfPage() {
   const [num1, setNumer1] = useState("");

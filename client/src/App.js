@@ -1,8 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Index from './pages/Inicio';
 import { AuthProvider } from './pages/AuthProvider';
+import Index from './pages/Inicio';
 import LoginPage from './pages/Login';
+import Red from './pages/red';
+import Diagram from './pages/Visualizacion';
 
 import ConfPage2 from './pages/Configuraciones';
 import ConfPage from './pages/Menu-Opciones';
@@ -13,7 +15,10 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/informacion" element={<LoginPage />} />
+          <Route path="/red" element={<Red />} />
           <Route path="/iniciar-sesion" element={<LoginPage />} />
+          <Route path="/prueba" element={<Diagram />} />
           <Route path="/configuraciones2" element={<ConfPage2 />} />
           <Route path="/configuraciones" element={<ConfPage />} />
         </Routes>

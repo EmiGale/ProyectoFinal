@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import InicioRedes from '../img/InicioRedes.jpg';
 import '../styles/index.css';
 import '../styles/RegisterPage.css';
 import Header from '../containers/Header';
+import { AuthContext } from './AuthProvider';
 
 function Index() {
+    const { isLoggedIn } = useContext(AuthContext);
+
     return (
         <div>
             <div>
@@ -23,7 +26,7 @@ function Index() {
                     puedes visualizar y configurar tu red en cualquier lugar y momento, gracias a nuestro sistema 
                     capaz de detectar topologias de red de forma automatica.
                     </p>
-                    <a href="registrarte">Registrarse</a>
+                    {isLoggedIn ? ("") : (<a href="registrarte">Registrarse</a>)}
                 </div>
                 </div>
             </div>

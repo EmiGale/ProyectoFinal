@@ -60,6 +60,10 @@ app.post("/api/inicio-sesion", (req, res) => {
       });
 });
 
+app.post("/api/cerrar-sesion", (req, res) => {
+    res.clearCookie('token');
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

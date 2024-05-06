@@ -25,12 +25,10 @@ function LoginPage() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ user: user, password: password }) // Envía el nombre como un objeto JSON
+      body: JSON.stringify({ user: user, password: password })
     })
     .then(response => response.json())
     .then(data => {
-      console.log("Respuesta de la API:", data); // Maneja la respuesta de la API
-
       if (data.result === 1) {
         Cookies.set('token', data.token);
         window.location.href = '/';
@@ -40,7 +38,7 @@ function LoginPage() {
       }
     })
     .catch(error => {
-      console.error("Error al enviar el nombre a la API:", error); // Maneja errores
+      console.error("Error al iniciar sesion:", error);
     });
   }
 

@@ -1,0 +1,29 @@
+/* Colores
+Letras: #42282c
+Azul: #6ca19e
+Azul claro: #84abaa
+Beige: #ded1b6
+Verde: #6d997a
+*/
+
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header{
+    display: flex;
+    background-color: #FFFFFF;
+    justify-content: center;
+    height: 100px;
+    width: 100%;
+}
+
+#encabezado{
+    width: 65%;
+    display: flex;
+    align-items: center;
+}
+
+
+
+

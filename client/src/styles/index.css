@@ -1,0 +1,133 @@
+/* Colores
+Letras: #42282c
+Azul: #6ca19e
+Azul claro: #84abaa
+Beige: #ded1b6
+Verde: #6d997a
+*/
+
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#encabezado{
+    width: 65%;
+    display: flex;
+    align-items: center;
+}
+
+.logo{
+    justify-content: center;
+    color: #42282c;
+    width: 20%;
+}
+
+.menu{
+    display: flex;
+    width: 80%;
+    font-size: 20px;
+    justify-content: right;
+}
+
+.menu a{
+    color: black;
+    text-decoration: none;
+    margin-left: 30px;
+}
+
+#linea-centro{
+    position: absolute;
+    height: 1000px;
+    width: 20%;
+    left: 40%;
+    background-color: #70F0E7;
+    z-index: -2;
+}
+
+.main{
+    height: 1000px;
+    width: 100%;
+    display: block;
+    margin: 0;
+}
+
+.imagen{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: -1;
+    height: 580px;
+    padding-top: 80px;
+}
+
+#inicioRedes{
+    height: 100%;
+}
+
+.containerInformacion{
+    width: 100%;
+    height: 200px;
+}
+
+.informacion{
+    display: block;
+    background-color: #FFFFFF;
+    position: relative;
+    width: 500px;
+    height: 300px;
+    left: 50%;
+    top: -55%;
+    color: #4B4396;
+    padding: 20px;
+    padding-left: 40px;
+}
+
+.informacion h2{
+    font-size: 26px;
+}
+
+.informacion p{
+    color: #313249;
+    font-size: 20px;
+}
+
+.informacion a{
+    background-color: #4B4396;
+    color: #FFFFFF;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    padding: 8px 20px 8px 20px;
+    border-radius: 20px;
+}
+
+footer{
+    margin: 0;
+    height: 7vh;
+    background-color: #180C5B;
+    color: #FFFFFF;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.informacionFooter{
+    display: flex;
+    width: 65%;
+}
+
+.universidad{
+    width: 40%;
+    text-align: center;
+}
+
+.creditos{
+    width: 60%;
+    text-align: right;
+}
+
+footer p{
+    margin: 0;
+    padding: 10px;
+}

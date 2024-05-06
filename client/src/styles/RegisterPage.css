@@ -1,0 +1,26 @@
+body {
+    display: block;
+    margin: 0px;
+    align-items: center;
+    font-size: 20px;
+  
+    background: repeating-linear-gradient(
+    45deg,
+    #606dbc,
+    #606dbc 5%,
+    #465298 5%,
+    #465298 10%
+    );
+    background-size: 100px 100px;
+    animation: move-it 2s linear infinite;
+  }
+  
+  /* BACKGROUND ANIMATION FOR BODY*/
+  @keyframes move-it {
+    0% {
+      background-position: initial;
+    }
+    100% {
+      background-position: 100px 0px;
+    }
+}

@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import Cookies from 'js-cookie';
 import Header from '../containers/Header';
+import { AuthContext } from './AuthProvider';
 import '../styles/inicioSesion.css';
 
 function LoginPage() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const mensajeError = document.getElementById('error');
+  const { isLoggedIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // Si el usuario ya está autenticado, redirigir a la página principal
+      window.location.href = '/';
+    }
+  }, [isLoggedIn]);
 
   const IniciarSesion = (event) => {
     event.preventDefault();
@@ -21,13 +31,13 @@ function LoginPage() {
     .then(data => {
       console.log("Respuesta de la API:", data); // Maneja la respuesta de la API
 
-      if (data.result == 1) {
+      if (data.result === 1) {
+        Cookies.set('token', data.token);
         window.location.href = '/';
       }
       else {
         mensajeError.style.display = 'block';
       }
-      
     })
     .catch(error => {
       console.error("Error al enviar el nombre a la API:", error); // Maneja errores

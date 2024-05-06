@@ -1,6 +1,7 @@
 const { inicioSesion } = require('./scripts/base-de-datos');
 const { spawn } = require('child_process');
 const express = require("express");
+const jwt = require('jsonwebtoken');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
@@ -48,21 +49,16 @@ app.post("/api/configuraciones", (req, res) => {
 });
 
 app.post("/api/inicio-sesion", (req, res) => {
+    let user = req.body.user
     inicioSesion(req.body).then(check => { //sirve para iniciar sesion con las cookies
         if (check == 1) {
-            req.session.usuario = { id: 1, nombre: req.body.user };
+            const token = jwt.sign({ user }, 'clave_secreta', { expiresIn: '1h' });
+            res.json({ result: 1, token });
         }
+        else
         res.json({ result: check });
       });
 });
-
-app.get('/api/checar-sesion', (req, res) => {
-    if (req.isAuthenticated()) {
-      res.status(200).json({ authenticated: true });
-    } else {
-      res.status(401).json({ authenticated: false });
-    }
-  });
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

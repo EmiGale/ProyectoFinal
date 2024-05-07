@@ -2,7 +2,7 @@ from netmiko import ConnectHandler
 
 
 class DeviceConfigurator:
-    def __init__(self, device_type, host, username, password, port=22, secret=None, hostname=None, tipo=None):
+    def __init__(self, device_type, host, username, password, port=22, secret=None):
         self.device = {
             'device_type': device_type,
             'host': host,
@@ -10,24 +10,23 @@ class DeviceConfigurator:
             'password': password,
             'port': port,
             'secret': secret,
-            
         }
-        self.info = {
-            'hostname': hostname,
-            'tipo': tipo,
-        }
+        self.info = []
         self.conexiones = []
         self.ips = []
         self.connection = None
 
     def __str__(self):
-        return f"host: {self.device}, ip: {self.ips}"
+        return f"device: {self.device}, ips: {self.ips}, connections: {self.conexiones}, info: {self.info}"
     
     def ver_IP(self):
         return self.ips
     
     def agregar_IP(self, interface, ip):
         self.ips.append([interface, ip])
+
+    def agregar_Info(self, hostname, tipo, software, version):
+        self.info.append([hostname, tipo, software, version])
 
     def agregar_Conexiones(self, interface_remote, interface_local, ip_remote):
         self.conexiones.append([interface_remote, interface_local, ip_remote])
@@ -39,6 +38,8 @@ class DeviceConfigurator:
         return {
             "device": self.device,
             "ips": self.ips,
+            "connections": self.conexiones,
+            "info": self.info,
         }
 
     def connect(self):
@@ -81,6 +82,12 @@ class DeviceConfigurator:
         if not self.connection:
             raise ValueError("Connection not established. Please connect first.")
         output = self.connection.send_command("show version", use_textfsm=True)
+        return output
+    
+    def show_version_complet(self):
+        if not self.connection:
+            raise ValueError("Connection not established. Please connect first.")
+        output = self.connection.send_command("show version")
         return output
     
     def show_ip_int_brief(self):

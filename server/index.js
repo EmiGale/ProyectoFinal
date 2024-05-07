@@ -1,6 +1,7 @@
 const { inicioSesion } = require('./scripts/base-de-datos');
 const { spawn } = require('child_process');
 const express = require("express");
+const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public/'));
@@ -46,6 +48,29 @@ app.post("/api/configuraciones", (req, res) => {
     procesoPython.on('close', (code) => {
     console.log(`Proceso de Python finalizado con código de salida ${code}`);
     });
+});
+
+app.post("/api/detectar-topologia", (req, res) => {
+  const rutaScriptPython = 'server/scripts/descubrimiento-redes.py';
+
+  const procesoPython = spawn('python', [rutaScriptPython]);
+
+    // Captura la salida estándar (stdout) del proceso
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        res.json({ message: `¡Hola, la suma es: ${data.toString()}` });
+    });
+
+    // Captura los errores del proceso
+    procesoPython.stderr.on('data', (data) => {
+    console.error(`Error del script: ${data.toString()}`);
+    });
+
+    // Maneja el cierre del proceso
+    procesoPython.on('close', (code) => {
+    console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
 });
 
 app.post("/api/inicio-sesion", (req, res) => {

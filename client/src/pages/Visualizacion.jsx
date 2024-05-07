@@ -109,11 +109,12 @@ function Diagram() {
 
       // Agregar nodos al diagrama
       json.forEach(element => {
-        var deviceId = element.device.host;
-        var deviceLabel = element.device.hostname;
-        var deviceType = element.device.device_type;
+        var deviceInfo = element.info;
+        var deviceId = element.info.host;
+        var deviceLabel = deviceInfo[0];
+        var deviceType = deviceInfo[1];
         var nodeData = {};
-        if (deviceType === "Switch")
+        if (deviceType === "switch")
           nodeData = { key: deviceId, foot: deviceLabel, img: router };
         else {
           nodeData = { key: deviceId, foot: deviceLabel, img: switchimg };

@@ -4,7 +4,7 @@ import { AuthProvider } from './pages/AuthProvider';
 import Index from './pages/Inicio';
 import LoginPage from './pages/Login';
 import Red from './pages/red';
-import Diagram from './pages/Visualizacion';
+import PruebaRed from './pages/prueba-redes';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <Route path="/informacion" element={<LoginPage />} />
           <Route path="/red" element={<Red />} />
           <Route path="/iniciar-sesion" element={<LoginPage />} />
-          <Route path="/prueba" element={<Diagram />} />
+          <Route path="/prueba" element={<PruebaRed />} />
         </Routes>
       </AuthProvider>
     </Router>

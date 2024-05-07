@@ -28,19 +28,11 @@ for dispositivo in configurator:
 
     if dispositivo.device['host'] not in host:
         AgregarDispositivos(dispositivo, ipUsadas, configurator)
-        print(dispositivo.device['host'])
-        host.append(dispositivo.device['host'])
+        #host.append(dispositivo.device['host'])
     dispositivo.disconnect()
 
-print("-----------------------------------------------")
-
-print(ipUsadas)
-datosFinales = ""
-
-for dispositivo in configurator:
-    print(dispositivo)
-    print(dispositivo.ver_Conexiones())
-    #print(dispositivo.ver_Conexiones())
+#for dispositivo in configurator:
+#    print(dispositivo)
 
 unique_configurations = []
 unique_configurations_strings = set()

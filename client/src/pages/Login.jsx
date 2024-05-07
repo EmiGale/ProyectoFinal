@@ -20,7 +20,7 @@ function LoginPage() {
   const IniciarSesion = (event) => {
     event.preventDefault();
 
-    fetch("/api/inicio-sesion", {
+    fetch("http://localhost:3001/api/inicio-sesion", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

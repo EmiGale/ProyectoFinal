@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import go from 'gojs'; 
 import router from '../img/router-svgrepo-com.svg';
 import switchimg from '../img/switch-svgrepo-com.svg';
 import Loading from '../containers/Loading';
+import { FormHostname } from '../containers/Conf';
 import '../styles/Visualizacion.css';
 
 function Diagram() {
   const [loading, setLoading] = useState(true); 
+  const [showForm, setShowForm] = useState(false);
+  const myDiagramRef = useRef(null);
 
   const DetectarRed = () => {
     return fetch("http://localhost:3001/api/detectar-topologia", {
@@ -22,24 +25,26 @@ function Diagram() {
     .catch(error => {
       console.error("Error:", error);
     });
-
   }
 
   function init(json) {
     const existingDiagram = go.Diagram.fromDiv(document.getElementById("myDiagramDiv"));
     if (existingDiagram) {
-      // Si hay un diagrama existente, eliminarlo antes de crear uno nuevo
       existingDiagram.div = null;
     }
 
-    // Crear el diagrama
-    const diagram = new go.Diagram("myDiagramDiv");
     const make = go.GraphObject.make;
+    const diagram = make(go.Diagram, myDiagramRef.current);
 
     // Definir la plantilla para los nodos
     diagram.nodeTemplate =
       make(go.Node, "Vertical",
-        { portId: "", fromSpot: go.Spot.AllSides, toSpot: go.Spot.AllSides },
+        { portId: "", fromSpot: go.Spot.AllSides, toSpot: go.Spot.AllSides,
+          click: function(e, node) {
+            console.log("Node clicked:", node.data.key);
+            setShowForm(true);
+          }
+        },
         make(go.Picture,
           { maxSize: new go.Size(50, 50) },
           new go.Binding("source", "img")),
@@ -108,7 +113,7 @@ function Diagram() {
           // Si no ha sido enviada, agrégala al conjunto de conexiones enviadas
           sentConnections.add(connectionString);
 
-          var deviceIndex = -1; // Inicializamos el índice del dispositivo de destino
+          deviceIndex = -1; // Inicializamos el índice del dispositivo de destino
 
           // Iterar sobre los demás dispositivos
           json.forEach((otroElemento, index) => {
@@ -183,8 +188,10 @@ function Diagram() {
     <div className='mainTopologia'>
       {loading && <Loading />}
       {!loading && (
-        <div id="myDiagramDiv" style={{ border: 'solid 1px blue', width: '1000px', height: '700px', backgroundColor: 'white' }}></div>
+        <div id="myDiagramDiv" style={{ border: 'solid 1px blue', width: '1000px', height: '700px', backgroundColor: 'white' }} ref={myDiagramRef}></div>
+        
       )}
+      {showForm && <FormHostname/>}
     </div>
     
   );

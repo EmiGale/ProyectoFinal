@@ -64,12 +64,12 @@ app.post("/api/detectar-topologia", (req, res) => {
 
     // Captura los errores del proceso
     procesoPython.stderr.on('data', (data) => {
-    console.error(`Error del script: ${data}`);
+      console.error(`Error del script: ${data}`);
     });
 
     // Maneja el cierre del proceso
     procesoPython.on('close', (code) => {
-    console.log(`Proceso de Python finalizado con código de salida ${code}`);
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
     });
   
 });

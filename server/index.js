@@ -58,12 +58,13 @@ app.post("/api/detectar-topologia", (req, res) => {
     // Captura la salida estándar (stdout) del proceso
     procesoPython.stdout.on('data', (data) => {
         console.log(`Resultado del script: ${data.toString()}`);
-        res.json({ message: `¡Hola, la suma es: ${data.toString()}` });
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
     });
 
     // Captura los errores del proceso
     procesoPython.stderr.on('data', (data) => {
-    console.error(`Error del script: ${data.toString()}`);
+    console.error(`Error del script: ${data}`);
     });
 
     // Maneja el cierre del proceso

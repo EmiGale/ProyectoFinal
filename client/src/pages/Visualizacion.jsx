@@ -1,170 +1,163 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import go from 'gojs'; 
 import router from '../img/router-svgrepo-com.svg';
 import switchimg from '../img/switch-svgrepo-com.svg';
+import Loading from '../containers/Loading';
 import '../styles/Visualizacion.css';
 
 function Diagram() {
-  useEffect(() => {
-    function init() {
+  const [loading, setLoading] = useState(true); 
 
-      const existingDiagram = go.Diagram.fromDiv(document.getElementById("myDiagramDiv"));
-      if (existingDiagram) {
-        // Si hay un diagrama existente, eliminarlo antes de crear uno nuevo
-        existingDiagram.div = null;
-      }
+  const DetectarRed = () => {
+    return fetch("http://localhost:3001/api/detectar-topologia", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
 
-      var json = [
-        {
-          "device": {
-            "device_type": "Router",
-            "hostname": "R1",
-            "host": "192.168.1.1",
-            "username": "gmedina",
-            "password": "cisco",
-            "port": 22,
-            "secret": "cisco"
-          },
-          "ips": [
-            ["GigabitEthernet0/0/0", "192.168.1.1"],
-            ["GigabitEthernet0/0/1", "192.168.4.1"]
-          ],
-          "connections": [
-            ["GigabitEthernet0/0/0", "GigabitEthernet0/0/1", "192.168.1.2"],
-            ["Serial0/0/0", "Serial0/1/1", "192.168.4.2"],
-            ["GigabitEthernet0/1/0", "GigabitEthernet0/0/0", "192.168.1.2"]
-          ]
-        },
-        {
-          "device": {
-            "device_type": "Router",
-            "hostname": "R2",
-            "host": "192.168.4.2",
-            "username": "gmedina",
-            "password": "cisco",
-            "port": 22,
-            "secret": "cisco"
-          },
-          "ips": [["Serial0/1", "192.168.4.2"]],
-          "connections": [["Serial0/1/1", "Serial0/0/0", "192.168.1.1"]]
-        },
-        {
-          "device": {
-            "device_type": "Switch",
-            "hostname": "S1",
-            "host": "192.168.1.2",
-            "username": "gmedina",
-            "password": "cisco",
-            "port": 22,
-            "secret": "cisco"
-          },
-          "ips": [["Vlan1", "192.168.1.2"]],
-          "connections": [["GigabitEthernet0/0/1", "GigabitEthernet0/0/0", "192.168.1.1"],
-          ["GigabitEthernet0/0/0", "GigabitEthernet0/1/0", "192.168.1.1"]]
-        }
-      ];
+  }
 
-      // Crear el diagrama
-      const diagram = new go.Diagram("myDiagramDiv");
-      const make = go.GraphObject.make;
+  function init(json) {
+    const existingDiagram = go.Diagram.fromDiv(document.getElementById("myDiagramDiv"));
+    if (existingDiagram) {
+      // Si hay un diagrama existente, eliminarlo antes de crear uno nuevo
+      existingDiagram.div = null;
+    }
 
-      // Definir la plantilla para los nodos
-      diagram.nodeTemplate =
-        make(go.Node, "Vertical",
-          { portId: "", fromSpot: go.Spot.AllSides, toSpot: go.Spot.AllSides },
-          make(go.Picture,
-            { maxSize: new go.Size(50, 50) },
-            new go.Binding("source", "img")),
-          make(go.TextBlock,
-            { margin: new go.Margin(3, 0, 0, 0),
-              maxSize: new go.Size(100, 30),
-              isMultiline: false },
-            new go.Binding("text", "foot")),
-        );
+    // Crear el diagrama
+    const diagram = new go.Diagram("myDiagramDiv");
+    const make = go.GraphObject.make;
 
-      // Definir la plantilla para los enlaces
-      diagram.linkTemplate =
-        make(go.Link,
-            make(go.Shape),
-            make(go.TextBlock,
-            { segmentIndex: 0, segmentOffset: new go.Point(NaN, NaN),
-                segmentOrientation: go.Orientation.Upright },
-                new go.Binding("text", "startInterface", function(interfaz) {
-                    return InterfazAbreviada(interfaz); 
-            })),
-            make(go.TextBlock,
-            { segmentIndex: -1, segmentOffset: new go.Point(NaN, NaN),
-                segmentOrientation: go.Orientation.Upright },
-                new go.Binding("text", "endInterface", function(interfaz) {
-                    return InterfazAbreviada(interfaz);
-            })),
+    // Definir la plantilla para los nodos
+    diagram.nodeTemplate =
+      make(go.Node, "Vertical",
+        { portId: "", fromSpot: go.Spot.AllSides, toSpot: go.Spot.AllSides },
+        make(go.Picture,
+          { maxSize: new go.Size(50, 50) },
+          new go.Binding("source", "img")),
+        make(go.TextBlock,
+          { margin: new go.Margin(3, 0, 0, 0),
+            maxSize: new go.Size(100, 30),
+            isMultiline: false },
+          new go.Binding("text", "foot")),
       );
 
-      let createdLinks = []; // Array para llevar un registro de los enlaces creados
-      // Crear un layout Force-Directed
-      var layout = make(go.ForceDirectedLayout);
+    // Definir la plantilla para los enlaces
+    diagram.linkTemplate =
+      make(go.Link,
+          make(go.Shape),
+          make(go.TextBlock,
+          { segmentIndex: 0, segmentOffset: new go.Point(NaN, NaN),
+              segmentOrientation: go.Orientation.Upright },
+              new go.Binding("text", "startInterface", function(interfaz) {
+                  return InterfazAbreviada(interfaz); 
+          })),
+          make(go.TextBlock,
+          { segmentIndex: -1, segmentOffset: new go.Point(NaN, NaN),
+              segmentOrientation: go.Orientation.Upright },
+              new go.Binding("text", "endInterface", function(interfaz) {
+                  return InterfazAbreviada(interfaz);
+          })),
+    );
 
-      // Asignar el layout al diagrama
-      diagram.layout = layout;
+    let createdLinks = []; // Array para llevar un registro de los enlaces creados
+    // Crear un layout Force-Directed
+    var layout = make(go.ForceDirectedLayout);
 
-      // Agregar nodos al diagrama
-      json.forEach(element => {
-        var deviceInfo = element.info;
-        var deviceId = element.info.host;
-        var deviceLabel = deviceInfo[0];
-        var deviceType = deviceInfo[1];
-        var nodeData = {};
-        if (deviceType === "switch")
-          nodeData = { key: deviceId, foot: deviceLabel, img: router };
-        else {
-          nodeData = { key: deviceId, foot: deviceLabel, img: switchimg };
-        }
-        diagram.model.addNodeData(nodeData);
-      });
+    // Asignar el layout al diagrama
+    diagram.layout = layout;
 
-      // Agregar enlaces al diagrama
-      json.forEach(element => {
-        var fromDevice = element.device.host;
-        var conexiones = element.connections;
-        conexiones.forEach(conexion => {
-          var localPort = conexion[0];
-          var remotePort = conexion[1];
-          var toDevice = conexion[2];
+    // Agregar nodos al diagrama
+    json.forEach(element => {
+      var deviceInfo = element.info;
+      var deviceId = element.device.host;
+      var deviceLabel = deviceInfo[0][0];
+      var deviceType = deviceInfo[0][1];
+      var nodeData = {};
+      if (deviceType === "switch")
+        nodeData = { key: deviceId, foot: deviceLabel, img: switchimg };
+      else {
+        nodeData = { key: deviceId, foot: deviceLabel, img: router };
+      }
+      diagram.model.addNodeData(nodeData);
+    });
+
+    var sentConnections = new Set();
+    // Agregar enlaces al diagrama
+    json.forEach(element => {
+      var fromDevice = element.device.host;
+      var conexiones = element.connections;
+
+      conexiones.forEach(conexion => {
+        var localPort = conexion[0];
+        var remotePort = conexion[1];
+        var toDevice = conexion[2];
+        var deviceIndex = -1; // Inicializamos el índice del dispositivo de destino
+
+        var connectionString = `${fromDevice}-${localPort}-${toDevice}-${remotePort}`;
+
+        if (!sentConnections.has(connectionString)) {
+          // Si no ha sido enviada, agrégala al conjunto de conexiones enviadas
+          sentConnections.add(connectionString);
+
           var deviceIndex = -1; // Inicializamos el índice del dispositivo de destino
 
           // Iterar sobre los demás dispositivos
           json.forEach((otroElemento, index) => {
-            // Ignorar el propio dispositivo
-            if (index !== json.indexOf(element)) {
-              otroElemento.ips.forEach(ip => {
-                // Comparar la IP de la conexión con las IPs del otro dispositivo
-                if (ip[1] === toDevice) {
-                  deviceIndex = index; // Si hay coincidencia, guardamos el índice del dispositivo
-                }
-              });
-            }
+              // Ignorar el propio dispositivo
+              if (index !== json.indexOf(element)) {
+                  otroElemento.ips.forEach(ip => {
+                      // Comparar la IP de la conexión con las IPs del otro dispositivo
+                      if (ip[1] === toDevice) {
+                          deviceIndex = index; // Si hay coincidencia, guardamos el índice del dispositivo
+                      }
+                  });
+              }
           });
 
           // Si se encontró un dispositivo coincidente y no existe un enlace en la dirección opuesta, crear la conexión gráfica
           if (deviceIndex !== -1) {
-            var linkKey = fromDevice + "-" + json[deviceIndex].device.host;
-            var reverseLinkKey = json[deviceIndex].device.host + "-" + fromDevice;
-            if (!createdLinks.includes(reverseLinkKey)) { // Verificar si el enlace en la dirección opuesta no ha sido creado
-              createdLinks.push(linkKey); // Registrar el enlace creado
-              var linkData = {
-                from: fromDevice,
-                to: json[deviceIndex].device.host,
-                startInterface: localPort,
-                endInterface: remotePort
-              };
-              diagram.model.addLinkData(linkData);
-            }
-          }
-        });
-      });
-    }
+              var linkKey = fromDevice + "-" + json[deviceIndex].device.host;
+              var reverseLinkKey = json[deviceIndex].device.host + "-" + fromDevice;
 
-    init();
+              // Verificar si el enlace en la dirección opuesta no ha sido creado
+              if (!createdLinks.includes(reverseLinkKey)) {
+                  createdLinks.push(linkKey); // Registrar el enlace creado
+                  var linkData = {
+                      from: fromDevice,
+                      to: json[deviceIndex].device.host,
+                      startInterface: localPort,
+                      endInterface: remotePort
+                  };
+                  diagram.model.addLinkData(linkData);
+              }
+          }
+        }
+      });
+    });
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const json = await DetectarRed();
+        init(json);
+      } catch (error) {
+        // Manejar errores si es necesario
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
   function InterfazAbreviada(interfazCompleta) {
@@ -188,7 +181,10 @@ function Diagram() {
 
   return (
     <div className='mainTopologia'>
-      <div id="myDiagramDiv" style={{ border: 'solid 1px blue', width: '1000px', height: '700px', backgroundColor: 'white' }}></div>
+      {loading && <Loading />}
+      {!loading && (
+        <div id="myDiagramDiv" style={{ border: 'solid 1px blue', width: '1000px', height: '700px', backgroundColor: 'white' }}></div>
+      )}
     </div>
     
   );

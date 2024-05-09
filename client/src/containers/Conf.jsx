@@ -102,5 +102,91 @@ export function FormEtherChannel() {
           </form>
       </div>
     );
-    
-  }
+}
+
+export function FormVTP() {
+
+    return (
+      <div>
+          <form>
+                <label htmlFor="VTP">Escoje si es servidor o cliente</label>
+                    <select>
+                        <option>
+                            Server
+                        </option>
+                        <option>
+                            Client
+                        </option>
+                    </select>
+                    <label htmlFor="VTP">Ingresa el dominio vtp</label>
+                    <input type="text" />
+                    <label htmlFor="VTP">Ingresa el password vtp</label>
+                    <input type="text" />
+                <button>Enviar</button>
+          </form>
+      </div>
+    );
+}
+
+export function FormVlan() {
+
+    return (
+      <div>
+          <form>
+                <label htmlFor="Vlan">Ingresa el número de vlan</label>
+                <input type="number" min="1" max="1005"/>
+                <label htmlFor="Vlan">Ingresa el nombre designado a la VLAN</label>
+                <input type="text" />
+                <label htmlFor="Vlan">Ingresa la ip</label>
+                <input type="text" />
+                <label htmlFor="Vlan">Ingresa la máscara</label>
+                <input type="text" />
+                <button>Enviar</button>
+          </form>
+      </div>
+    );
+}
+
+export function FormIPRoute() {
+
+    return (
+      <div>
+          <form>
+                <label htmlFor="IPRoute">Ingresa la red</label>
+                <input type="text" />
+                <label htmlFor="IPRoute">Ingresa la máscara</label>
+                <input type="text" />
+                <label htmlFor="IPRoute">Ingresa la ip de siguiente salto</label>
+                <input type="text" />
+                <label htmlFor="etherchannel">O escoge la interfaz</label>
+                    <select>
+                        <option></option>
+                    </select>
+                <button>Enviar</button>
+          </form>
+      </div>
+    );
+}
+
+/*
+export function FormNATDynamic() {
+
+    return (
+      <div>
+          <form>
+                <label htmlFor="IPRoute">Ingresa el nombre de la pool</label>
+                <input type="text" />
+                <label htmlFor="IPRoute">Ingresa la primera IP del rango</label>
+                <input type="text" />
+                <label htmlFor="IPRoute">Ingresa la última IP del rango</label>
+                <input type="text" />
+                <label htmlFor="IPRoute">Ingresa la netmask</label>
+                <input type="text"/>
+                <label htmlFor="IPRoute"></label>
+                <input type="text"/>
+                <button>Enviar</button>
+          </form>
+      </div>
+    );
+}
+*/

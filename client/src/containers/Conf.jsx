@@ -2,12 +2,17 @@ import React, {useState} from 'react';
 import './css/Conf.css'
 
 export function FormHostname() {
+  const handleSubmit = (event) => {
+    event.preventDefault(); 
+    const hostname = event.target.elements.Hostname.value; 
+    console.log("Hostname ingresado:", hostname);
+  };
 
   return (
-    <div>
-        <form>
+    <div className='containerInfo'>
+        <form onSubmit={handleSubmit}>
             <label htmlFor="Hostname">ingresa el Hostname</label>
-            <input type="text" />
+            <input type="text" name='Hostname'/>
             <button>Enviar</button>
         </form>
     </div>
@@ -15,7 +20,6 @@ export function FormHostname() {
 }
 
 export function FormBanner() {
-
     return (
       <div>
           <form>
@@ -25,11 +29,10 @@ export function FormBanner() {
           </form>
       </div>
     );
-  }
+}
 
 
-  export function FormIPinterfaz() {
-
+export function FormIPinterfaz() {
     return (
       <div>
           <form>
@@ -41,10 +44,9 @@ export function FormBanner() {
           </form>
       </div>
     );
-  }
+}
 
-  export function FormDHCPv4() {
-
+export function FormDHCPv4() {
     return (
       <div>
           <form>
@@ -62,4 +64,4 @@ export function FormBanner() {
           </form>
       </div>
     );
-  }
+}

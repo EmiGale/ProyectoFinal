@@ -23,31 +23,31 @@ app.use(session({
 app.use(bodyParser.json());
 
 app.post("/api/configuraciones", (req, res) => {
-    const n1 = req.body.num1;
-    const n2 = req.body.num2;
-    console.log(req.body)
+    
+});
 
-    const rutaScriptPython = 'server/scripts/suma.py';
-    const argumentos = [n1, n2];
+app.post("/api/info", (req, res) => {
+  console.log(req.body)
+  const rutaScriptPython = 'server/scripts/info.py';
+  const argumentos = [req.body];
 
-    // Ejecuta el script de Python como un proceso hijo
-    const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
 
-    // Captura la salida estándar (stdout) del proceso
-    procesoPython.stdout.on('data', (data) => {
-        console.log(`Resultado del script: ${data.toString()}`);
-        res.json({ message: `¡Hola, la suma es: ${data.toString()}` });
-    });
+  // Captura la salida estándar (stdout) del proceso
+  procesoPython.stdout.on('data', (data) => {
+      console.log(data.toString());
+      res.json({ message: data.toString() });
+  });
 
-    // Captura los errores del proceso
-    procesoPython.stderr.on('data', (data) => {
+  // Captura los errores del proceso
+  procesoPython.stderr.on('data', (data) => {
     console.error(`Error del script: ${data.toString()}`);
-    });
+  });
 
-    // Maneja el cierre del proceso
-    procesoPython.on('close', (code) => {
+  // Maneja el cierre del proceso
+  procesoPython.on('close', (code) => {
     console.log(`Proceso de Python finalizado con código de salida ${code}`);
-    });
+  });
 });
 
 app.post("/api/detectar-topologia", (req, res) => {

@@ -1,0 +1,14 @@
+.containerInfo{
+    display: block;
+    width: 500px;
+    height: 80vh;
+}
+
+.datos{
+    margin: 25px;
+
+}
+
+label{
+    display: block;
+}

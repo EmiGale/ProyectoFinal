@@ -3,10 +3,15 @@ import go from 'gojs';
 import router from '../img/router-svgrepo-com.svg';
 import switchimg from '../img/switch-svgrepo-com.svg';
 import Loading from '../containers/Loading';
+import { FormHostname } from '../containers/Conf';
+import InfoNodo from '../containers/info.jsx';
 import '../styles/Visualizacion.css';
 
 function Prueba() {
   const [loading, setLoading] = useState(true); 
+  const [datosNodo, setDatosNodo] = useState(""); 
+  const [showInfo, setShowInfo] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const myDiagramRef = useRef(null);
 
   const DetectarRed = () => {
@@ -23,7 +28,6 @@ function Prueba() {
     .catch(error => {
       console.error("Error:", error);
     });
-
   }
 
   function init(json) {
@@ -32,17 +36,17 @@ function Prueba() {
       existingDiagram.div = null;
     }
 
-    // Crear el diagrama
     const make = go.GraphObject.make;
-    const diagram = make(go.Diagram, myDiagramRef.current, {
-    });
-    
+    const diagram = make(go.Diagram, myDiagramRef.current);
+
     // Definir la plantilla para los nodos
     diagram.nodeTemplate =
       make(go.Node, "Vertical",
         { portId: "", fromSpot: go.Spot.AllSides, toSpot: go.Spot.AllSides,
           click: function(e, node) {
-            console.log("Node clicked:", node.data.key);
+            console.log("Node clicked:", node.data);
+            setDatosNodo(node.data);
+            setShowInfo(true);
           }
         },
         make(go.Picture,
@@ -79,18 +83,18 @@ function Prueba() {
 
     // Asignar el layout al diagrama
     diagram.layout = layout;
-
     // Agregar nodos al diagrama
     json.forEach(element => {
       var deviceInfo = element.info;
       var deviceId = element.device.host;
+      var infoNodo = element.device;
       var deviceLabel = deviceInfo[0][0];
       var deviceType = deviceInfo[0][1];
       var nodeData = {};
       if (deviceType === "switch")
-        nodeData = { key: deviceId, foot: deviceLabel, img: switchimg };
+        nodeData = { key: deviceId, foot: deviceLabel, img: switchimg, username: infoNodo.username, password: infoNodo.password };
       else {
-        nodeData = { key: deviceId, foot: deviceLabel, img: router };
+        nodeData = { key: deviceId, foot: deviceLabel, img: router, username: infoNodo.username, password: infoNodo.password };
       }
       diagram.model.addNodeData(nodeData);
     });
@@ -150,11 +154,13 @@ function Prueba() {
     });
   }
 
+  const json = [{"device": {"device_type": "cisco_ios", "host": "192.168.1.1", "username": "gmedina", "password": "cisco", "port": 22, "secret": "cisco"}, "ips": [["GigabitEthernet0/0/0", "192.168.1.1"]], "connections": [["GigabitEthernet0/0/0", "GigabitEthernet1/0/11", "192.168.1.2"], ["GigabitEthernet0/0/0", "GigabitEthernet1/0/11", "192.168.1.2"]], "info": [["R1", "router", "X86_64_LINUX_IOSD-UNIVERSALK9-M", "17.6.6a"]]}, {"device": {"device_type": "cisco_ios", "host": "192.168.1.2", "username": "gmedina", "password": "cisco", "port": 22, "secret": "cisco"}, "ips": [["Vlan1", "192.168.1.2"]], "connections": [["GigabitEthernet1/0/11", "GigabitEthernet0/0/0", "192.168.1.1"]], "info": [["S1", "switch", "C1000-UNIVERSALK9-M", "15.2(7)E6"]]}];
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const json = await DetectarRed();
+        //const json = await DetectarRed();
         init(json);
       } catch (error) {
         // Manejar errores si es necesario
@@ -189,7 +195,9 @@ function Prueba() {
       {loading && <Loading />}
       {!loading && (
         <div id="myDiagramDiv" style={{ border: 'solid 1px blue', width: '1000px', height: '700px', backgroundColor: 'white' }} ref={myDiagramRef}></div>
+        
       )}
+      {showInfo && <InfoNodo data={datosNodo}/>}
     </div>
     
   );

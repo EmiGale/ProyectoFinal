@@ -29,7 +29,7 @@ app.post("/api/configuraciones", (req, res) => {
 app.post("/api/info", (req, res) => {
   console.log(req.body)
   const rutaScriptPython = 'server/scripts/info.py';
-  const argumentos = [req.body];
+  const argumentos = [req.body.ip, req.body.username, req.body.password];
 
   const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
 

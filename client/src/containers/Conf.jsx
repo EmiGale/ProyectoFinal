@@ -50,6 +50,7 @@ export function FormIPinterfaz() {
     );
   }
 
+
   export function FormDescripcionInterfaz() {
 
     return (
@@ -85,7 +86,6 @@ export function FormEtherChannel() {
       </div>
     );
 }
-
 
 export function FormDHCPv4() {
     return (

@@ -1,6 +1,5 @@
 from netmiko import ConnectHandler
 
-
 class DeviceConfigurator:
     def __init__(self, device_type, host, username, password, port=22, secret=None):
         self.device = {

@@ -28,23 +28,14 @@ for dispositivo in configurator:
 
     if dispositivo.device['host'] not in host:
         AgregarDispositivos(dispositivo, ipUsadas, configurator)
-        #host.append(dispositivo.device['host'])
+        host.append(dispositivo.device['host'])
+
     dispositivo.disconnect()
 
 #for dispositivo in configurator:
 #    print(dispositivo)
 
-unique_configurations = []
-unique_configurations_strings = set()
-
-for config in configurator:
-    config_str = json.dumps(config.to_dict(), sort_keys=True)
-    if config_str not in unique_configurations_strings:
-        unique_configurations_strings.add(config_str)
-        unique_configurations.append(config)
-
-# Serialize each object individually
-serialized_configurators = [config.to_dict() for config in unique_configurations]
+serialized_configurators = [config.to_dict() for config in configurator]
 
 # Serialize the list to JSON
 serialized_config = json.dumps(serialized_configurators)

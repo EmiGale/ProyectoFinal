@@ -154,13 +154,13 @@ function Prueba() {
     });
   }
 
-  const json = [{"device": {"device_type": "cisco_ios", "host": "192.168.1.1", "username": "gmedina", "password": "cisco", "port": 22, "secret": "cisco"}, "ips": [["GigabitEthernet0/0/0", "192.168.1.1"]], "connections": [["GigabitEthernet0/0/0", "GigabitEthernet1/0/11", "192.168.1.2"], ["GigabitEthernet0/0/0", "GigabitEthernet1/0/11", "192.168.1.2"]], "info": [["R1", "router", "X86_64_LINUX_IOSD-UNIVERSALK9-M", "17.6.6a"]]}, {"device": {"device_type": "cisco_ios", "host": "192.168.1.2", "username": "gmedina", "password": "cisco", "port": 22, "secret": "cisco"}, "ips": [["Vlan1", "192.168.1.2"]], "connections": [["GigabitEthernet1/0/11", "GigabitEthernet0/0/0", "192.168.1.1"]], "info": [["S1", "switch", "C1000-UNIVERSALK9-M", "15.2(7)E6"]]}];
+  //const json = [{"device": {"device_type": "cisco_ios", "host": "192.168.1.1", "username": "gmedina", "password": "cisco", "port": 22, "secret": "cisco"}, "ips": [["GigabitEthernet0/0/0", "192.168.1.1"]], "connections": [["GigabitEthernet0/0/0", "GigabitEthernet1/0/11", "192.168.1.2"], ["GigabitEthernet0/0/0", "GigabitEthernet1/0/11", "192.168.1.2"]], "info": [["R1", "router", "X86_64_LINUX_IOSD-UNIVERSALK9-M", "17.6.6a"]]}, {"device": {"device_type": "cisco_ios", "host": "192.168.1.2", "username": "gmedina", "password": "cisco", "port": 22, "secret": "cisco"}, "ips": [["Vlan1", "192.168.1.2"]], "connections": [["GigabitEthernet1/0/11", "GigabitEthernet0/0/0", "192.168.1.1"]], "info": [["S1", "switch", "C1000-UNIVERSALK9-M", "15.2(7)E6"]]}];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        //const json = await DetectarRed();
+        const json = await DetectarRed();
         init(json);
       } catch (error) {
         // Manejar errores si es necesario

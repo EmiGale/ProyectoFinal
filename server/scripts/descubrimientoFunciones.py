@@ -24,9 +24,9 @@ def AgregarIP(dispositivo, ipUsadas):
 
 def AgregarDispositivos(dispositivo, ipUsadas, configurator):
     cdpResult = dispositivo.show_cdp()
-    #print(cdpResult)
     for disnuevo in cdpResult:
         if disnuevo['management_ip'] not in ipUsadas:
+            ipUsadas.append(disnuevo['management_ip'])
             configurator.append(DeviceConfigurator(device_type='cisco_ios', host=disnuevo["management_ip"], username='gmedina', password='cisco', secret='cisco'))
         dispositivo.agregar_Conexiones(disnuevo['local_port'], disnuevo['remote_port'], disnuevo['management_ip'])
 

@@ -10,6 +10,6 @@ conexion = DeviceConfigurator(device_type='cisco_ios', host=ip, username=usernam
 
 conexion.connect()
 
-version = conexion.show_version()
+version = conexion.show_rendimiento()
 
 print(json.dumps(version))

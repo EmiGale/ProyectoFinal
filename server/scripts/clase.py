@@ -25,8 +25,8 @@ class DeviceConfigurator:
     def agregar_IP(self, interface, ip):
         self.ips.append([interface, ip])
 
-    def agregar_Info(self, hostname, tipo, software, version):
-        self.info.append([hostname, tipo, software, version])
+    def agregar_Info(self, hostname, tipo, software, version, serial):
+        self.info.append([hostname, tipo, software, version, serial])
 
     def agregar_Conexiones(self, interface_remote, interface_local, ip_remote):
         self.conexiones.append([interface_remote, interface_local, ip_remote])
@@ -88,6 +88,12 @@ class DeviceConfigurator:
         if not self.connection:
             raise ValueError("Connection not established. Please connect first.")
         output = self.connection.send_command("show version")
+        return output
+    
+    def show_rendimiento(self):
+        if not self.connection:
+            raise ValueError("Connection not established. Please connect first.")
+        output = self.connection.send_command("show processes cpu history", use_textfsm=True)
         return output
     
     def show_ip_int_brief(self):

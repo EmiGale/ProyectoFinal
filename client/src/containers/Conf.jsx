@@ -85,43 +85,7 @@ export function FormEtherChannel() {
       </div>
     );
 }
-}
 
-  export function FormDescripcionInterfaz() {
-
-    return (
-      <div>
-          <form>
-                <label htmlFor="descr">Escoge la interfaz</label>
-                    <select>
-                        <option></option>
-                    </select>
-                <label htmlFor="descr">Ingresa las descripción</label>
-                <input type="text" />
-                <button>Enviar</button>
-          </form>
-      </div>
-    );
-}
-
-export function FormEtherChannel() {
-
-    return (
-      <div>
-          <form>
-                <label htmlFor="etherchannel">Escoge la primera interfaz</label>
-                    <select>
-                        <option></option>
-                    </select>
-                    <label htmlFor="etherchannel">Escoge la Segunda interfaz</label>
-                    <select>
-                        <option></option>
-                    </select>
-                <button>Enviar</button>
-          </form>
-      </div>
-    );
-}
 
 export function FormDHCPv4() {
     return (

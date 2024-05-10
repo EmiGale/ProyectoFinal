@@ -5,13 +5,13 @@ def AgregarIP(dispositivo, ipUsadas):
     dispositivoIP = dispositivo.ver_IP()
     version = dispositivo.show_version()
     versionCom = dispositivo.show_version_complet()
-
     if (versionCom.find("Router") != -1):
         tipo = "router"
     else:
         tipo = "switch"
+    serial = ''.join(version[0]['serial'])
 
-    dispositivo.agregar_Info(version[0]['hostname'], tipo, version[0]['software_image'], version[0]['version'])
+    dispositivo.agregar_Info(version[0]['hostname'], tipo, version[0]['software_image'], version[0]['version'], serial)
 
     dispositivoIP = dispositivo.ver_IP()
     for ip in ipBrief:
@@ -24,10 +24,14 @@ def AgregarIP(dispositivo, ipUsadas):
 
 def AgregarDispositivos(dispositivo, ipUsadas, configurator):
     cdpResult = dispositivo.show_cdp()
-    #print(cdpResult)
+    version = dispositivo.show_version()
+    serial = ''.join(version[0]['serial'])
+    #print(serialUsadas)
     for disnuevo in cdpResult:
-        if disnuevo['management_ip'] not in ipUsadas:
+        if (disnuevo['management_ip'] not in ipUsadas):
+            ipUsadas.append(disnuevo['management_ip'])
             configurator.append(DeviceConfigurator(device_type='cisco_ios', host=disnuevo["management_ip"], username='gmedina', password='cisco', secret='cisco'))
+
         dispositivo.agregar_Conexiones(disnuevo['local_port'], disnuevo['remote_port'], disnuevo['management_ip'])
 
     return ipUsadas

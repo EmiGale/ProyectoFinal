@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import go from 'gojs'; 
 import router from '../img/router-svgrepo-com.svg';
 import switchimg from '../img/switch-svgrepo-com.svg';
+import nube from '../img/cloud-svgrepo-com.svg';
 import Loading from '../containers/Loading';
 import { FormHostname } from '../containers/Conf';
 import '../styles/Visualizacion.css';
@@ -82,15 +83,19 @@ function Diagram() {
 
     // Agregar nodos al diagrama
     json.forEach(element => {
-      var deviceInfo = element.info;
-      var deviceId = element.device.host;
-      var deviceLabel = deviceInfo[0][0];
-      var deviceType = deviceInfo[0][1];
-      var nodeData = {};
-      if (deviceType === "switch")
-        nodeData = { key: deviceId, foot: deviceLabel, img: switchimg };
-      else {
-        nodeData = { key: deviceId, foot: deviceLabel, img: router };
+      try {
+        var deviceInfo = element.info;
+        var deviceId = element.device.host;
+        var deviceLabel = deviceInfo[0][0];
+        var deviceType = deviceInfo[0][1];
+        var nodeData = {};
+        if (deviceType === "switch")
+          nodeData = { key: deviceId, foot: deviceLabel, img: switchimg };
+        else {
+          nodeData = { key: deviceId, foot: deviceLabel, img: router };
+        }
+      } catch (error) {
+        nodeData = { key: deviceId, foot: "Internet", img: nube };
       }
       diagram.model.addNodeData(nodeData);
     });

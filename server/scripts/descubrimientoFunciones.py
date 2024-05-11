@@ -5,13 +5,14 @@ def AgregarIP(dispositivo, ipUsadas):
     dispositivoIP = dispositivo.ver_IP()
     version = dispositivo.show_version()
     versionCom = dispositivo.show_version_complet()
+    serial = version[0]['serial'][0]
 
-    if (versionCom.find("Router") != -1):
-        tipo = "router"
-    else:
+    if (versionCom.find("Switch") != -1):
         tipo = "switch"
+    else:
+        tipo = "router"
 
-    dispositivo.agregar_Info(version[0]['hostname'], tipo, version[0]['software_image'], version[0]['version'])
+    dispositivo.agregar_Info(version[0]['hostname'], tipo, version[0]['software_image'], version[0]['version'], serial)
 
     dispositivoIP = dispositivo.ver_IP()
     for ip in ipBrief:

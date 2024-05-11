@@ -10,6 +10,8 @@ configurator.append(DeviceConfigurator(device_type='cisco_ios', host='192.168.1.
 configurator[0].connect()
 
 ipUsadas = []
+disEliminar = []
+serialUsadas = []
 host = []
 # Configure the hostname
 #output_hostname = configurator[0].configure_hostname('R2')
@@ -22,15 +24,25 @@ configurator[0].disconnect()
 
 for dispositivo in configurator:
     dispositivo.connect()
+    serialDispositivo = dispositivo.ver_Info()
+
     checar = len(dispositivo.ver_IP())
     if checar == 0:
         ipUsadas = AgregarIP(dispositivo, ipUsadas)
 
-    if dispositivo.device['host'] not in host:
-        AgregarDispositivos(dispositivo, ipUsadas, configurator)
-        host.append(dispositivo.device['host'])
+    if serialDispositivo[0][4] in serialUsadas:
+        dispositivo.disconnect()
+        disEliminar.append(dispositivo)
+    else:
+        serialUsadas.append(serialDispositivo[0][4])
+        if dispositivo.device['host'] not in host:
+            AgregarDispositivos(dispositivo, ipUsadas, configurator)
+            host.append(dispositivo.device['host'])
 
-    dispositivo.disconnect()
+        dispositivo.disconnect()
+    
+for dispo in disEliminar:
+    configurator.remove(dispo)
 
 #for dispositivo in configurator:
 #    print(dispositivo)

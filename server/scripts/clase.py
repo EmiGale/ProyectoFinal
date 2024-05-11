@@ -21,11 +21,14 @@ class DeviceConfigurator:
     def ver_IP(self):
         return self.ips
     
+    def ver_Info(self):
+        return self.info
+    
     def agregar_IP(self, interface, ip):
         self.ips.append([interface, ip])
 
-    def agregar_Info(self, hostname, tipo, software, version):
-        self.info.append([hostname, tipo, software, version])
+    def agregar_Info(self, hostname, tipo, software, version, serial):
+        self.info.append([hostname, tipo, software, version, serial])
 
     def agregar_Conexiones(self, interface_remote, interface_local, ip_remote):
         self.conexiones.append([interface_remote, interface_local, ip_remote])

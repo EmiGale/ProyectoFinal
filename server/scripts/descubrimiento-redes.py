@@ -24,20 +24,18 @@ for dispositivo in configurator:
         if checar == 0:
             ipUsadas = AgregarIP(dispositivo, ipUsadas)
 
-    if dispositivo.device['host'] not in host:
-        AgregarDispositivos(dispositivo, ipUsadas, configurator)
-        host.append(dispositivo.device['host'])
+        if dispositivo.device['host'] not in host:
+            AgregarDispositivos(dispositivo, ipUsadas, configurator)
+            host.append(dispositivo.device['host'])
+            dispositivo.disconnect()
+    except:
+        configurator.pop()
 
-    dispositivo.disconnect()
-
+    
 #for dispositivo in configurator:
 #    print(dispositivo)
 
-#print(serialUsadas)
-
 serialized_configurators = [config.to_dict() for config in configurator]
-
-# Serialize the list to JSON
 serialized_config = json.dumps(serialized_configurators)
 print(serialized_config)
 

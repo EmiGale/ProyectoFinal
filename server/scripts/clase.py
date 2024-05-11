@@ -21,6 +21,9 @@ class DeviceConfigurator:
     def ver_IP(self):
         return self.ips
     
+    def ver_Info(self):
+        return self.info
+    
     def agregar_IP(self, interface, ip):
         self.ips.append([interface, ip])
 

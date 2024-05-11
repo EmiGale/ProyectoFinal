@@ -10,6 +10,8 @@ configurator[0].connect()
 
 serialUsadas = []
 ipUsadas = []
+disEliminar = []
+serialUsadas = []
 host = []
 
 ipUsadas = AgregarIP(configurator[0], ipUsadas)
@@ -18,20 +20,27 @@ ipUsadas = AgregarDispositivos(configurator[0], ipUsadas, configurator)
 configurator[0].disconnect()
 
 for dispositivo in configurator:
-    try:
-        dispositivo.connect()
-        checar = len(dispositivo.ver_IP())
-        if checar == 0:
-            ipUsadas = AgregarIP(dispositivo, ipUsadas)
+    dispositivo.connect()
+    serialDispositivo = dispositivo.ver_Info()
 
+    checar = len(dispositivo.ver_IP())
+    if checar == 0:
+        ipUsadas = AgregarIP(dispositivo, ipUsadas)
+
+    if serialDispositivo[0][4] in serialUsadas:
+        dispositivo.disconnect()
+        disEliminar.append(dispositivo)
+    else:
+        serialUsadas.append(serialDispositivo[0][4])
         if dispositivo.device['host'] not in host:
             AgregarDispositivos(dispositivo, ipUsadas, configurator)
             host.append(dispositivo.device['host'])
-            dispositivo.disconnect()
-    except:
-        configurator.pop()
 
+        dispositivo.disconnect()
     
+for dispo in disEliminar:
+    configurator.remove(dispo)
+
 #for dispositivo in configurator:
 #    print(dispositivo)
 

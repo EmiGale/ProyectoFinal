@@ -5,11 +5,12 @@ def AgregarIP(dispositivo, ipUsadas):
     dispositivoIP = dispositivo.ver_IP()
     version = dispositivo.show_version()
     versionCom = dispositivo.show_version_complet()
-    if (versionCom.find("Router") != -1):
-        tipo = "router"
-    else:
+    serial = version[0]['serial'][0]
+
+    if (versionCom.find("Switch") != -1):
         tipo = "switch"
-    serial = ''.join(version[0]['serial'])
+    else:
+        tipo = "router"
 
     dispositivo.agregar_Info(version[0]['hostname'], tipo, version[0]['software_image'], version[0]['version'], serial)
 

@@ -20,24 +20,33 @@ ipUsadas = AgregarDispositivos(configurator[0], ipUsadas, configurator)
 configurator[0].disconnect()
 
 for dispositivo in configurator:
-    dispositivo.connect()
-    serialDispositivo = dispositivo.ver_Info()
+    try:
+        dispositivo.connect()
+        serialDispositivo = dispositivo.ver_Info()
 
-    checar = len(dispositivo.ver_IP())
-    if checar == 0:
-        ipUsadas = AgregarIP(dispositivo, ipUsadas)
+        checar = len(dispositivo.ver_IP())
+        if checar == 0:
+            ipUsadas = AgregarIP(dispositivo, ipUsadas)
 
-    if serialDispositivo[0][4] in serialUsadas:
-        dispositivo.disconnect()
-        disEliminar.append(dispositivo)
-    else:
-        serialUsadas.append(serialDispositivo[0][4])
-        if dispositivo.device['host'] not in host:
-            AgregarDispositivos(dispositivo, ipUsadas, configurator)
-            host.append(dispositivo.device['host'])
+        if serialDispositivo[0][4] in serialUsadas:
+            dispositivo.disconnect()
+            disEliminar.append(dispositivo)
+        else:
+            serialUsadas.append(serialDispositivo[0][4])
+            if dispositivo.device['host'] not in host:
+                AgregarDispositivos(dispositivo, ipUsadas, configurator)
+                host.append(dispositivo.device['host'])
 
-        dispositivo.disconnect()
-    
+            dispositivo.disconnect()
+    except:
+        disInfo = dispositivo.ver_Device()
+        for dis in configurator:
+            conexionTotal = dis.ver_Conexiones()
+            ip = dis.ver_Device()
+            for conexiones in conexionTotal:
+                if disInfo['host'] == conexiones[2]:
+                    dispositivo.agregar_Conexiones(conexiones[1], conexiones[0], ip['host'])
+        
 for dispo in disEliminar:
     configurator.remove(dispo)
 

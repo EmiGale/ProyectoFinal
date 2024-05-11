@@ -18,6 +18,9 @@ class DeviceConfigurator:
     def __str__(self):
         return f"device: {self.device}, ips: {self.ips}, connections: {self.conexiones}, info: {self.info}"
     
+    def ver_Device(self):
+        return self.device
+
     def ver_IP(self):
         return self.ips
     

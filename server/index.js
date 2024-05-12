@@ -36,7 +36,8 @@ app.post("/api/info", (req, res) => {
   // Captura la salida estándar (stdout) del proceso
   procesoPython.stdout.on('data', (data) => {
       console.log(data.toString());
-      res.json({ message: data.toString() });
+      const jsonData = JSON.parse(data.toString());
+      res.json(jsonData);
   });
 
   // Captura los errores del proceso

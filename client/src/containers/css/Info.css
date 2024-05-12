@@ -1,14 +1,46 @@
 .containerInfo{
     display: block;
-    width: 500px;
-    height: 80vh;
+    width: 410px;
+    height: 700px;
+    border: 40px solid rgb(48, 48, 94);
+    border-right: 20px solid rgb(48, 48, 94);
+    border-left: 20px solid rgb(48, 48, 94);
+    background-color: white;
+    margin: 0px;
+}
+
+h2{
+    margin: 0px;
 }
 
 .datos{
     margin: 25px;
-
+    font-size: 2.5vh;
 }
 
 label{
     display: block;
+    padding: 5px;
+}
+
+.btn {
+    font-size: 18px;
+    border: none; 
+    color: white; 
+    padding: 10px 24px; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    display: inline-block;
+    margin: 5px;
+    width: 300px;
+    background-image: linear-gradient(to right, #182d44, #4ab2e2);
+}
+
+.CerrarBtn{
+    margin: 0px;
+    color: #182d44;
+    background-color: white;
+    border: 3px solid #4ab2e2;
+    width: 100px;
+    height: 33px;
 }

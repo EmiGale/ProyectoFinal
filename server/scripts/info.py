@@ -6,10 +6,13 @@ ip = sys.argv[1]
 username = sys.argv[2]
 password = sys.argv[3]
 
-conexion = DeviceConfigurator(device_type='cisco_ios', host=ip, username=username, password=password, secret=password)
+try:
+    conexion = DeviceConfigurator(device_type='cisco_ios', host=ip, username=username, password=password, secret=password)
 
-conexion.connect()
+    conexion.connect()
 
-version = conexion.show_rendimiento()
+    version = conexion.show_ip_int_brief()
 
-print(json.dumps(version))
+    print(json.dumps(version))
+except:
+    print(json.dumps("Error al conectarse."))

@@ -46,7 +46,6 @@ function Prueba() {
       make(go.Node, "Vertical",
         { portId: "", fromSpot: go.Spot.AllSides, toSpot: go.Spot.AllSides,
           click: function(e, node) {
-            console.log("Node clicked:", node.data);
             setDatosNodo(node.data);
             setShowInfo(true);
           }
@@ -60,6 +59,10 @@ function Prueba() {
             isMultiline: false },
           new go.Binding("text", "foot")),
       );
+    
+    diagram.addDiagramListener("BackgroundSingleClicked", function(e) {
+      setShowInfo(false);
+    });
 
     // Definir la plantilla para los enlaces
     diagram.linkTemplate =
@@ -95,12 +98,12 @@ function Prueba() {
         var deviceType = deviceInfo[0][1];
         var nodeData = {};
         if (deviceType === "switch")
-          nodeData = { key: deviceId, foot: deviceLabel, img: switchimg, username: infoNodo.username, password: infoNodo.password };
+          nodeData = { key: deviceId, foot: deviceLabel, img: switchimg, username: infoNodo.username, password: infoNodo.password, info: deviceInfo[0] };
         else {
-          nodeData = { key: deviceId, foot: deviceLabel, img: router, username: infoNodo.username, password: infoNodo.password };
+          nodeData = { key: deviceId, foot: deviceLabel, img: router, username: infoNodo.username, password: infoNodo.password, info: deviceInfo[0] };
         }
       } catch (error) {
-        nodeData = { key: deviceId, foot: "Internet", img: nube };
+        nodeData = { key: deviceId, foot: "Internet", img: nube, info: ["Internet", "Internet", "", "", ""] };
       }
       diagram.model.addNodeData(nodeData);
     });

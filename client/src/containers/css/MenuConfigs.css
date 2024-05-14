@@ -1,0 +1,25 @@
+.MenuConfiguraciones{
+    font-size: 18px;
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 5px;
+    width: 300px;
+    background-image: linear-gradient(to right, #182d44, #4ab2e2);
+}
+.MenuConfiguraciones option{
+    color:#182d44;
+}
+
+.CerrarBtn{
+    display: inline;
+    margin: 0px;
+    color: #182d44;
+    background-color: white;
+    border: 3px solid #4ab2e2;
+    width: 100px;
+    height: 33px;
+}

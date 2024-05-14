@@ -1,38 +1,100 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import MensajeExito from './MensajeResultado';
 import './css/Conf.css'
 
-export function FormHostname() {
+export function FormHostname({data}) {
+  const [hostname, setHostname] = useState("");
+  const [mensajeResultado, setMensajeResultado] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault(); 
-    const hostname = event.target.elements.Hostname.value; 
-    console.log("Hostname ingresado:", hostname);
+    setHostname(event.target.elements.Hostname.value); 
   };
 
+  useEffect(() => {
+    fetchData();
+  }, [hostname]);
+  
+  const fetchData = async () => {
+    try {
+      const res = await CambiarHostname();
+    } catch (error) {
+      // Manejar errores si es necesario
+    } 
+  };
+
+  const CambiarHostname = () => {
+    return fetch("http://localhost:3001/api/config/hostname", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'hostname', ip: data.key, username: data.username, password: data.password, hostname: hostname })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+  }
+
   return (
-    <div className='containerInfo'>
+    <div className='divConfiguraciones'>
         <form onSubmit={handleSubmit}>
             <label htmlFor="Hostname">Ingresa el Hostname</label>
             <input type="text" name='Hostname'/>
             <button>Enviar</button>
+            {mensajeResultado && <MensajeExito/>}
         </form>
         
     </div>
   );
 }
 
-export function FormBanner() {
-  const handleSubmit = (event) => {
+export function FormBanner({data}) {
+  const [mensajeResultado, setMensajeResultado] = useState(false);
+
+  const handleSubmitBanner = (event) => {
     event.preventDefault(); 
     const banner = event.target.elements.Banner.value; 
-    console.log("Banner ingresado:", banner);
+    fetchData(banner)
   };
 
+  
+  const fetchData = async (banner) => {
+    try {
+      const res = await CambiarBanner(banner);
+    } catch (error) {
+      // Manejar errores si es necesario
+    }
+  };
+
+  const CambiarBanner = (banner) => {
+    return fetch("http://localhost:3001/api/config/banner", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'banner', ip: data.key, username: data.username, password: data.password, banner: banner })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+  }
+
     return (
-      <div>
-          <form onSubmit={handleSubmit}>
+      <div className='divConfiguraciones'>
+          <form onSubmit={handleSubmitBanner}>
               <label htmlFor="Banner">Ingresa el mensaje del día</label>
               <input type="text" name='Banner'/>
               <button>Enviar</button>
+              {mensajeResultado && <MensajeExito/>}
           </form>
       </div>
     );
@@ -51,7 +113,7 @@ export function FormIPinterfaz() {
   };
 
     return (
-      <div>
+      <div className='divConfiguraciones'>
           <form onSubmit={handleSubmit}>
             <label htmlFor="Interfaz">Escoge la interfaz</label>
               <select name = 'Interfaz'>
@@ -78,7 +140,7 @@ export function FormDescripcionInterfaz() {
   };
 
     return (
-      <div>
+      <div className='divConfiguraciones'>
           <form onSubmit={handleSubmit}>
                 <label htmlFor="Interfaz">Escoge la interfaz</label>
                     <select name = 'Interfaz'>
@@ -102,7 +164,7 @@ export function FormEtherChannel() {
   };
 
     return (
-      <div>
+      <div className='divConfiguraciones'>
           <form onSubmit={handleSubmit}>
                 <label htmlFor="Interfaz1">Escoge la primera interfaz</label>
                     <select>
@@ -134,7 +196,7 @@ export function FormDHCPv4() {
   };
 
   return (
-    <div>
+    <div className='divConfiguraciones'>
         <form onSubmit={handleSubmit}>
             <label htmlFor="excludeAddresses">Ingresa las direcciones a excluir</label>
             <input type="text" id="excludeAddresses" name="excludeAddresses" />
@@ -157,20 +219,47 @@ export function FormDHCPv4() {
   );
 }
 
-export function FormVTP() {
-  const handleSubmit = (event) => {
+export function FormVTP({data}) {
+  const [banner, setBanner] = useState("");
+  const [mensajeResultado, setMensajeResultado] = useState(false);
+
+  const handleSubmitBanner = (event) => {
     event.preventDefault(); 
     const dominio = event.target.elements.domain.value;
     const password = event.target.elements.pwd.value; 
     const mode = event.target.elements.mode.value; 
-    console.log("Dominio:", dominio);
-    console.log("Contraseña:", password);
-    console.log("Modo:", mode);
+    fetchData(dominio, password, mode);
+  };
+  
+  const fetchData = async (dominio, password, mode) => {
+    try {
+      const res = await CambiarBanner(dominio, password, mode);
+    } catch (error) {
+      // Manejar errores si es necesario
+    }
   };
 
+  const CambiarBanner = (dominio, password, mode) => {
+    return fetch("http://localhost:3001/api/config/vtp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'vtp', ip: data.key, username: data.username, password: data.password, dominio: dominio
+        , password: password, mode: mode
+       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+  }
     return (
-      <div>
-          <form onSubmit={handleSubmit}>
+      <div className='divConfiguraciones'>
+          <form onSubmit={handleSubmitBanner}>
                 <label htmlFor="domain">Ingresa el dominio VTP</label>
                 <input type="text" name = 'domain'/>
                 <label htmlFor="pwd">Ingresa la contraseña VTP</label>
@@ -196,7 +285,7 @@ export function FormVLANS() {
   };
 
     return (
-      <div>
+      <div className='divConfiguraciones'>
           <form onSubmit={handleSubmit}>                
                 <label htmlFor="numero">Ingresa el número de vlan</label>
                 <input type="text" name = 'numero'/>
@@ -231,7 +320,7 @@ export function FormIPRoute() {
   };
 
   return (
-    <div>
+    <div className='divConfiguraciones'>
       <form onSubmit={handleSubmit}>                
         <label htmlFor="ip">Ingresa la dirección IP</label>
         <input type="text" name="ip" placeholder="Ejemplo: 192.168.1.0"/>
@@ -262,7 +351,7 @@ export function FormNative() {
   };
 
     return (
-      <div>
+      <div className='divConfiguraciones'>
           <form onSubmit={handleSubmit}>                
                 <label htmlFor="interfaz">Ingresa la interfaz troncal</label>
                 <input type="text" name = 'interfaz'/>
@@ -284,7 +373,7 @@ export function FormAccessVlan() {
   };
 
   return (
-    <div>
+    <div className='divConfiguraciones'>
       <form onSubmit={handleSubmit}>                
         <label htmlFor="interfaz">Ingresa los puertos</label>
         <input type="text" name="interfaz" placeholder="Ejemplo: fa0/1-2"/>
@@ -308,7 +397,7 @@ export function FormPortSecurityMax() {
   };
 
   return (
-    <div>
+    <div className='divConfiguraciones'>
       <form onSubmit={handleSubmit}>                
         <label htmlFor="interfaz">Ingresa la interfaz</label>
         <input type="text" name="interfaz" placeholder="Ejemplo: fa0/1-2"/>
@@ -332,7 +421,7 @@ export function FormPortSecurityType() {
   };
 
   return (
-    <div>
+    <div className='divConfiguraciones'>
       <form onSubmit={handleSubmit}>                
         <label htmlFor="interfaz">Ingresa la interfaz</label>
         <input type="text" name="interfaz" placeholder="Ejemplo: fa0/1-2"/>
@@ -356,7 +445,7 @@ export function FormPortSecurityViolation() {
   };
 
   return (
-    <div>
+    <div className='divConfiguraciones'>
       <form onSubmit={handleSubmit}>                
         <label htmlFor="interfaz">Ingresa la interfaz</label>
         <input type="text" name="interfaz" placeholder="Ejemplo: fa0/1-2"/>
@@ -386,7 +475,7 @@ export function FormRoutInterVlan() {
   };
 
   return (
-    <div>
+    <div className='divConfiguraciones'>
       <form onSubmit={handleSubmit}>                
         <label htmlFor="subint">Ingresa la subinterfaz</label>
         <input type="text" name="subint" placeholder="Ejemplo: g0/0.40"/>
@@ -417,7 +506,7 @@ export function FormDefaultGateway() {
   };
 
   return (
-    <div>
+    <div className='divConfiguraciones'>
       <form onSubmit={handleSubmit}>                
         <label htmlFor="ip">Ingresa la dirección IP del gateway por defecto</label>
         <input type="text" name="ip" placeholder="Ejemplo: 192.168.1.1"/>
@@ -428,3 +517,21 @@ export function FormDefaultGateway() {
   );
 }
 
+export default {
+  FormHostname,
+  FormBanner,
+  FormIPinterfaz,
+  FormDescripcionInterfaz,
+  FormEtherChannel,
+  FormDHCPv4,
+  FormVTP,
+  FormVLANS,
+  FormIPRoute,
+  FormNative,
+  FormAccessVlan,
+  FormPortSecurityMax,
+  FormPortSecurityType,
+  FormPortSecurityViolation,
+  FormRoutInterVlan,
+  FormDefaultGateway
+};

@@ -48,7 +48,7 @@ function Interfaces({ data }) {
                     <div key={index} className="interfaz">
                         <p>Interfaz: {interfaceInfo.interface}</p>
                         <p>Dirección IP: {interfaceInfo.ip_address}</p>
-                        <p>Estado: {interfaceInfo.status === 'up' ? 'Encendida' : 'Apagada'}</p>
+                        <p style={{ color: interfaceInfo.status === 'up' ? 'green' : 'red' }}>Estado: {interfaceInfo.status === 'up' ? 'Encendida' : 'Apagada'}</p>
                     </div>
                 ))
             }

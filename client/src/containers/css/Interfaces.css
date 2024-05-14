@@ -1,7 +1,38 @@
 .contenedorInterfaces {
-    margin: 10px;
     width: 300px;
-    height: 160px;
-    overflow-y: scroll; /* Hacer que el desplazamiento sea vertical */
-    border: 1px solid #000; /* Borde para visualización */
-}
+    height: 180px;
+    overflow-y: auto; /* Habilita la barra de desplazamiento vertical */
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+
+  .contenedorInterfaces p{
+    margin: 5px;
+  }
+
+  .interfaz {
+    margin-bottom: 25px;
+  }
+  
+  .contenedorInterfaces::-webkit-scrollbar {
+    width: 8px; /* Ancho de la barra de desplazamiento */
+  }
+  
+  .contenedorInterfaces::-webkit-scrollbar-track {
+    background: white; /* Color de fondo de la pista */
+    border-radius: 5px;
+  }
+  
+  .contenedorInterfaces::-webkit-scrollbar-thumb {
+    
+    background-image: linear-gradient(to bottom, #182d44, #4ab2e2);
+    border-radius: 2px;
+  }
+  
+  .contenedorInterfaces::-webkit-scrollbar-thumb:hover {
+    background-image: linear-gradient(to top, #182d44, #4ab2e2);
+    
+  }
+  

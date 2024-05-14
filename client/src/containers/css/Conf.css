@@ -2,3 +2,30 @@
     margin: 10px;
     background-color: wheat;
 }
+
+.divConfiguraciones{
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Asegura que esté en frente de todo */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    width: 300px; /* Ancho del div */
+    height: 200px; /* Alto del div */
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    align-items: center;
+    justify-content: center;
+}
+
+button{
+    margin: 10px;
+    color: #182d44;
+    background-color: white;
+    border: 3px solid #4ab2e2;
+    width: 100px;
+    height: 33px;
+    text-align: center;
+}

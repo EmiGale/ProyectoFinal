@@ -75,6 +75,74 @@ app.post("/api/detectar-topologia", (req, res) => {
   
 });
 
+app.post("/api/config/hostname", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.hostname];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+app.post("/api/config/banner", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.banner];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+app.post("/api/config/vtp", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.dominio, req.body.password,
+    req.body.mode
+  ];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
 app.post("/api/inicio-sesion", (req, res) => {
     let user = req.body.user
     inicioSesion(req.body).then(check => { //sirve para iniciar sesion con las cookies

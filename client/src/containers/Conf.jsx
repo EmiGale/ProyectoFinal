@@ -15,6 +15,7 @@ export function FormHostname() {
             <input type="text" name='Hostname'/>
             <button>Enviar</button>
         </form>
+        
     </div>
   );
 }

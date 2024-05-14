@@ -335,10 +335,3 @@ class DeviceConfigurator:
         output = self.connection.send_config_set(commands)
 
         return output
-        
-
-
-        
-        
-
-

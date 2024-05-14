@@ -61,6 +61,14 @@ class DeviceConfigurator:
         config_commands = [f'hostname {hostname}']
         output = self.connection.send_config_set(config_commands)
         return output
+    
+    def banner(self, banner):
+        if not self.connection:
+            raise ValueError("Connection not established. Please connect firnew_hostname")
+        
+        config_commands = [f'banner motd #{banner}#']
+        output = self.connection.send_config_set(config_commands)
+        return output
 
     def configure_interface_description(self, interface, description):
         if not self.connection:
@@ -106,6 +114,13 @@ class DeviceConfigurator:
             raise ValueError("Connection not established. Please connect first.")
         
         output = self.connection.send_command("show ip interface brief", use_textfsm=True)
+        return output
+    
+    def show_ip_int_brief_v6(self):
+        if not self.connection:
+            raise ValueError("Connection not established. Please connect first.")
+        
+        output = self.connection.send_command("show ipv6 interface brief", use_textfsm=True)
         return output
     
 

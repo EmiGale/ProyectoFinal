@@ -127,12 +127,12 @@ function Prueba() {
           json.forEach((otroElemento, index) => {
               // Ignorar el propio dispositivo
               if (index !== json.indexOf(element)) {
-                  otroElemento.ips.forEach(ip => {0
-                      // Comparar la IP de la conexión con las IPs del otro dispositivo
-                      if (ip[1] === toDevice) {
-                          deviceIndex = index; // Si hay coincidencia, guardamos el índice del dispositivo
-                      }
-                  });
+                  //otroElemento.ips.forEach(ip => {0
+                  //    // Comparar la IP de la conexión con las IPs del otro dispositivo
+                  //    if (ip[1] === toDevice) {
+                  //        deviceIndex = index; // Si hay coincidencia, guardamos el índice del dispositivo
+                  //    }
+                  //});
               }
           });
 

@@ -202,11 +202,11 @@ function Prueba() {
   return (
     <div className='mainTopologia'>
       {loading && <Loading />}
+      {showInfo && <InfoNodo data={datosNodo}/>}
       {!loading && (
         <div id="myDiagramDiv" style={{ border: 'solid 1px blue', width: '1000px', height: '700px', backgroundColor: 'white' }} ref={myDiagramRef}></div>
         
       )}
-      {showInfo && <InfoNodo data={datosNodo}/>}
     </div>
     
   );

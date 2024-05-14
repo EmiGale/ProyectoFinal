@@ -43,6 +43,3 @@ elif tipo == 'vtp':
         print(json.dumps(version))
     except:
         print(json.dumps("Error al conectarse."))
-
-
-

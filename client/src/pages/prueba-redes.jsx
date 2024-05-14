@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import go from 'gojs'; 
 import router from '../img/router-svgrepo-com.svg';
 import switchimg from '../img/switch-svgrepo-com.svg';
+import nube from '../img/cloud-svgrepo-com.svg';
 import Loading from '../containers/Loading';
 import { FormHostname } from '../containers/Conf';
 import InfoNodo from '../containers/info.jsx';
@@ -85,16 +86,19 @@ function Prueba() {
     diagram.layout = layout;
     // Agregar nodos al diagrama
     json.forEach(element => {
-      var deviceInfo = element.info;
-      var deviceId = element.device.host;
-      var infoNodo = element.device;
-      var deviceLabel = deviceInfo[0][0];
-      var deviceType = deviceInfo[0][1];
-      var nodeData = {};
-      if (deviceType === "switch")
-        nodeData = { key: deviceId, foot: deviceLabel, img: switchimg, username: infoNodo.username, password: infoNodo.password };
-      else {
-        nodeData = { key: deviceId, foot: deviceLabel, img: router, username: infoNodo.username, password: infoNodo.password };
+      try {
+        var deviceInfo = element.info;
+        var deviceId = element.device.host;
+        var deviceLabel = deviceInfo[0][0];
+        var deviceType = deviceInfo[0][1];
+        var nodeData = {};
+        if (deviceType === "switch")
+          nodeData = { key: deviceId, foot: deviceLabel, img: switchimg };
+        else {
+          nodeData = { key: deviceId, foot: deviceLabel, img: router };
+        }
+      } catch (error) {
+        nodeData = { key: deviceId, foot: "Internet", img: nube };
       }
       diagram.model.addNodeData(nodeData);
     });
@@ -123,7 +127,7 @@ function Prueba() {
           json.forEach((otroElemento, index) => {
               // Ignorar el propio dispositivo
               if (index !== json.indexOf(element)) {
-                  otroElemento.ips.forEach(ip => {
+                  otroElemento.ips.forEach(ip => {0
                       // Comparar la IP de la conexión con las IPs del otro dispositivo
                       if (ip[1] === toDevice) {
                           deviceIndex = index; // Si hay coincidencia, guardamos el índice del dispositivo
@@ -146,6 +150,7 @@ function Prueba() {
                       startInterface: localPort,
                       endInterface: remotePort
                   };
+
                   diagram.model.addLinkData(linkData);
               }
           }

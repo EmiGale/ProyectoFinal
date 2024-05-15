@@ -405,8 +405,12 @@ class DeviceConfigurator:
 
         
 
-
+    def copy_running_config_startup_config(self):
+        if not self.connection:
+            raise ValueError("Connection not established. Please connect first.")
         
+        commands = 'do copy running-config startup-config \n'
         
-
-
+        output = self.connection.send_config_set(commands)
+        
+        return output

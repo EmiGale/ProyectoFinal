@@ -122,6 +122,10 @@ footer{
     text-align: center;
 }
 
+.botonInicio{
+    width: 200px;
+}
+
 .creditos{
     width: 60%;
     text-align: right;

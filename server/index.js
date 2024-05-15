@@ -1,4 +1,4 @@
-const { inicioSesion } = require('./scripts/base-de-datos');
+const { inicioSesion, registrarSSH, Registrarse } = require('./scripts/base-de-datos');
 const { spawn } = require('child_process');
 const express = require("express");
 const cors = require('cors');
@@ -386,6 +386,17 @@ app.post("/api/inicio-sesion", (req, res) => {
         else
         res.json({ result: check });
       });
+});
+
+app.post("/api/registrar-ip", (req, res) => {
+  console.log(req.body);
+  registrarSSH(req.body);
+});
+
+app.post("/api/registrarte", (req, res) => {
+  console.log(req.body);
+  Registrarse(req.body);
+  console.log("Se agrego");
 });
 
 app.post("/api/cerrar-sesion", (req, res) => {

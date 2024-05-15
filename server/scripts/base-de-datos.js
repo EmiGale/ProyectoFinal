@@ -64,6 +64,48 @@ async function inicioSesion(data) {
   }
 }
 
+async function Registrarse(data) {
+  let conexion;
+
+  try {
+    conexion = await connectToDatabase();
+    
+    // Buscar el usuario
+    const result = await conexion.request()
+      .input('username', sql.VarChar, data.user)
+      .input('password', sql.VarChar, data.password)
+      .query('INSERT INTO USUARIOS (username, password) VALUES (@username, @password)');
+      
+    // Cerrar la conexión
+    await closeConnection(conexion);
+  } catch (error) {
+    console.error('Error en la aplicación:', error);
+  }
+}
+
+async function registrarSSH(data) {
+  let conexion;
+
+  try {
+    conexion = await connectToDatabase();
+    
+    // Buscar el usuario
+    const result = await conexion.request()
+      .input('username', sql.VarChar, data.usuario)
+      .input('password', sql.VarChar, data.password)
+      .input('ip', sql.VarChar, data.ip)
+      .query('INSERT INTO USUARIOS_SSH (username, password, IP) VALUES (@username, @password, @ip)');
+      
+    // Cerrar la conexión
+    await closeConnection(conexion);
+
+  } catch (error) {
+    console.error('Error en la aplicación:', error);
+  }
+}
+
 module.exports = { 
-  inicioSesion: inicioSesion
+  inicioSesion: inicioSesion,
+  registrarSSH: registrarSSH,
+  Registrarse: Registrarse
 };

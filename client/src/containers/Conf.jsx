@@ -48,6 +48,7 @@ export function FormHostname({data}) {
             <button>Enviar</button>
             {mensajeResultado && <MensajeExito/>}
         </form>
+        
     </div>
   );
 }
@@ -807,6 +808,8 @@ export function FormNOSHUT({data}) {
         </div>
       );
 }
+
+
 
 
 export default {

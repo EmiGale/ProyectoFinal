@@ -31,7 +31,7 @@ function LoginPage() {
     .then(data => {
       if (data.result === 1) {
         Cookies.set('token', data.token);
-        window.location.href = '/';
+        window.location.href = '/registrar-ip';
       }
       else {
         mensajeError.style.display = 'block';

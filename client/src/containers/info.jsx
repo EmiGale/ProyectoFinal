@@ -2,11 +2,13 @@ import React, {useState, useEffect} from 'react';
 import Interfaces from './Interfaces';
 import MenuConfigs from './MenuConfigs';
 import InfoDispositivo from './InfoDispositivo';
+import Interfacev6 from './Interfacesv6';
 import './css/Info.css'
 
 export function InfoNodo({ data }) {
   const [showInfoDispositivo, setShowInfoDispositivo] = useState(false);
   const [showInterfaces, setShowInterfaces] = useState(false);
+  const [showInterfacesv6, setShowInterfacesv6] = useState(false);
   const [showConfiguraciones, setShowConfiguraciones] = useState(false);
   const [showCerrar, setShowCerrar] = useState(false)
 
@@ -14,11 +16,21 @@ export function InfoNodo({ data }) {
       setShowInterfaces(true);
       setShowConfiguraciones(false);
       setShowInfoDispositivo(false);
+      setShowInterfacesv6(false);
       setShowCerrar(true);
     }
 
     function VerInfoDispositivo() {
       setShowInfoDispositivo(true);
+      setShowInterfaces(false);
+      setShowConfiguraciones(false);
+      setShowInterfacesv6(false);
+      setShowCerrar(true);
+    }
+
+    function VerInfoDispositivov6() {
+      setShowInterfacesv6(true);
+      setShowInfoDispositivo(false);
       setShowInterfaces(false);
       setShowConfiguraciones(false);
       setShowCerrar(true);
@@ -28,6 +40,7 @@ export function InfoNodo({ data }) {
       setShowConfiguraciones(true);
       setShowInterfaces(false);
       setShowInfoDispositivo(false);
+      setShowInterfacesv6(false);
       setShowCerrar(false);
     }
 
@@ -35,6 +48,7 @@ export function InfoNodo({ data }) {
       setShowInfoDispositivo(false);
       setShowInterfaces(false);
       setShowConfiguraciones(false);
+      setShowInterfacesv6(false);
       setShowCerrar(false);
   };
 
@@ -47,8 +61,10 @@ export function InfoNodo({ data }) {
                 {showInfoDispositivo && <InfoDispositivo data={data}/>}
                 <button onClick={VerInfoDispositivo} className='btn'>INFORMACIÓN</button>
                 <button onClick={VerInfo} className='btn'>INTERFACES</button>
+                <button onClick={VerInfoDispositivov6} className='btn'>INTERFACES V6</button>
                 <button className='btn' onClick={VerConfiguraciones}>CONFIGURACIONES</button>
                 {showInterfaces && <Interfaces data={data}/>}
+                {showInterfacesv6 && <Interfacev6 data={data}/>}
                 {showConfiguraciones && <MenuConfigs data={data}/>}
                 {showCerrar && <button onClick={handleCerrar} className='CerrarBtn'>Cerrar</button>}
             </div>

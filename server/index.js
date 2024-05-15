@@ -51,6 +51,31 @@ app.post("/api/info", (req, res) => {
   });
 });
 
+app.post("/api/info-v6", (req, res) => {
+  console.log(req.body)
+  const rutaScriptPython = 'server/scripts/infov6.py';
+  const argumentos = [req.body.ip, req.body.username, req.body.password];
+
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+  // Captura la salida estándar (stdout) del proceso
+  procesoPython.stdout.on('data', (data) => {
+      console.log(data.toString());
+      const jsonData = JSON.parse(data.toString());
+      res.json(jsonData);
+  });
+
+  // Captura los errores del proceso
+  procesoPython.stderr.on('data', (data) => {
+    console.error(`Error del script: ${data.toString()}`);
+  });
+
+  // Maneja el cierre del proceso
+  procesoPython.on('close', (code) => {
+    console.log(`Proceso de Python finalizado con código de salida ${code}`);
+  });
+});
+
 app.post("/api/detectar-topologia", (req, res) => {
   const rutaScriptPython = 'server/scripts/descubrimiento-redes.py';
 
@@ -122,8 +147,216 @@ app.post("/api/config/banner", (req, res) => {
 app.post("/api/config/vtp", (req, res) => {
   const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
 
-  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.dominio, req.body.password,
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.dominio, req.body.password2,
     req.body.mode
+  ];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+app.post("/api/config/vlan", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.vlan, req.body.nombre
+  ];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+app.post("/api/config/intip", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.interface, req.body.ip2, req.body.mask
+  ];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+
+app.post("/api/config/default", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.ip2
+  ];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+app.post("/api/config/logging", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.ip2
+  ];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+app.post("/api/config/ntp", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.ip2
+  ];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+app.post("/api/config/username", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.user, req.body.password2
+  ];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+app.post("/api/config/route", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.ip2, req.body.mask, req.body.salida
+  ];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+app.post("/api/config/shut", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.interface
+  ];
+
+  console.log(argumentos);
+  const procesoPython = spawn('python', [rutaScriptPython, ...argumentos]);
+
+    procesoPython.stdout.on('data', (data) => {
+        console.log(`Resultado del script: ${data.toString()}`);
+        const jsonData = JSON.parse(data.toString());
+        res.json(jsonData);
+    });
+    procesoPython.stderr.on('data', (data) => {
+      console.error(`Error del script: ${data}`);
+    });
+    procesoPython.on('close', (code) => {
+      console.log(`Proceso de Python finalizado con código de salida ${code}`);
+    });
+  
+});
+
+app.post("/api/config/noshut", (req, res) => {
+  const rutaScriptPython = 'server/scripts/aplicar-configuraciones.py';
+
+  const argumentos = [req.body.tipo, req.body.ip, req.body.username, req.body.password, req.body.interface
   ];
 
   console.log(argumentos);

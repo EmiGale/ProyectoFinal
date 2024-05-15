@@ -129,15 +129,17 @@ class DeviceConfigurator:
         if not self.connection:
             raise ValueError("Connection not established. Please connect first.")
         
-        command = 'interface {}\n'.format(interface)
+        commands = [
+            f'interface {interface}',
+            f'ip add {ip} {mask}',
+            f'no shutdown'
+        ]
 
-        output = self.connection.send_config_set([command])
-
-        command = 'ip add{}\n'.format(ip, mask)
-
-        output = self.connection.send_config_set([command])
+        output = []
+        output.append(self.connection.send_config_set(commands))
 
         return output
+
 
     def configure_dhcp(self, pool_name, excl_begin, excl_end, net, subnet_mask, default_router, dns_server):
         if not self.connection:
@@ -152,8 +154,8 @@ class DeviceConfigurator:
         ]
 
         output = ""
-        for command in commands:
-            output += self.connection.send_config_set(command)
+        
+        output += self.connection.send_config_set(commands)
 
         return output
     
@@ -166,12 +168,9 @@ class DeviceConfigurator:
             'vtp mode {} \n'.format(mode),
             'vtp domain {} \n'.format(domain),
             'vtp password {} \n'.format(password),
-
         ]
-
         output = ""
-        for command in commands:
-            output += self.connection.send_config_set(command)
+        output += self.connection.send_config_set(commands)
 
         return output
     
@@ -180,13 +179,12 @@ class DeviceConfigurator:
             raise ValueError("Connection not established. Please connect first.")
 
         commands = [
-            'vlan {} \n'.format(nvlan),
-            'name {} \n'.format(name),
+            f'vlan {nvlan}',
+            f'name {name}',
         ]
 
-        output = ""
-        for command in commands:
-            output += self.connection.send_config_set(command)
+        output = []
+        output.append(self.connection.send_config_set(commands))
 
         return output
 
@@ -206,16 +204,32 @@ class DeviceConfigurator:
 
         return output
     
-    def ip_route(self, ip, mask, salidaip, intsalida):
+    def ntp(self, ip):
         if not self.connection:
             raise ValueError("Connection not established. Please connect first.")
         
-        if salidaip is not None:
-            command = 'ip route {} {} {}\n'.format(ip, mask, salidaip)
-            output = self.connection.send_config_set(command)
-        elif intsalida is not None:
-            command = 'ip route {} {} {}\n'.format(ip, mask, intsalida)
-            output = self.connection.send_config_set(command)
+        commands = 'ntp server {} \n'.format(ip)
+
+        output = self.connection.send_config_set(commands)
+
+        return output
+    
+    def username(self, user, password):
+        if not self.connection:
+            raise ValueError("Connection not established. Please connect first.")
+        
+        commands = 'username {} privilege 15 secret {} \n'.format(user, password)
+
+        output = self.connection.send_config_set(commands)
+
+        return output
+    
+    def ip_route(self, ip, mask, salidaip):
+        if not self.connection:
+            raise ValueError("Connection not established. Please connect first.")
+        
+        command = 'ip route {} {} {}\n'.format(ip, mask, salidaip)
+        output = self.connection.send_config_set(command)
 
         return output
 
@@ -259,9 +273,18 @@ class DeviceConfigurator:
         output = self.connection.send_config_set(commands)
 
         return output  
-      
     
+    def logging(self, ip):
+        if not self.connection:
+            raise ValueError("Connection not established. Please connect first.")
+        
+        commands = ['logging {} \n'.format(ip),
+                    'loggin trap 4',]
 
+        output = self.connection.send_config_set(commands)
+
+        return output
+      
     def access_vlan(self, int, vlans): ##aqui de preferencia recibir fa0/1-2 si es rango, para no ir de interfaz en interfaz
         if not self.connection:
             raise ValueError("Connection not established. Please connect first.")
@@ -350,6 +373,36 @@ class DeviceConfigurator:
         output = self.connection.send_config_set(commands)
 
         return output
+    
+    def shutdown(self, interface):
+        if not self.connection:
+            raise ValueError("Connection not established. Please connect first.")
+        
+        commands = [
+            f'interface {interface}',
+            f'shutdown'
+        ]
+
+        output = []
+        output.append(self.connection.send_config_set(commands))
+
+        return output
+    
+    def no_shutdown(self, int):
+        if not self.connection:
+            raise ValueError("Connection not established. Please connect first.")
+        
+        commands = [
+            f'interface {int}',
+            f'no shutdown'
+        ]
+
+        output = []
+        output.append(self.connection.send_config_set(commands))
+
+        return output
+
+
         
 
 

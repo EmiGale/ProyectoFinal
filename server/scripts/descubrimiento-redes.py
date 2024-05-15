@@ -3,7 +3,7 @@ import json
 from descubrimientoFunciones import *
 
 configurator = []
-configurator.append(DeviceConfigurator(device_type='cisco_ios', host='192.168.1.1', username='gmedina', password='cisco', secret='cisco'))
+configurator.append(DeviceConfigurator(device_type='cisco_ios', host='192.168.10.1', username='gmedina', password='cisco', secret='cisco'))
 
 # Connect to the device
 configurator[0].connect()
@@ -23,6 +23,7 @@ for dispositivo in configurator:
     try:
         dispositivo.connect()
         serialDispositivo = dispositivo.ver_Info()
+        dispositivo.logging('192.168.10.11')
 
         checar = len(dispositivo.ver_IP())
         if checar == 0:

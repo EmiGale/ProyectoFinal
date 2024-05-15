@@ -42,10 +42,13 @@ button{
     background-color: #180D5B;
     color: #FFFFFF;
     height: 40px;
-    width: 150px;
     border-radius: 20px;
     font-size: 18px;
     margin-top: 30px;
+}
+
+.botonInicio{
+    width: 180px;
 }
 
 #error{

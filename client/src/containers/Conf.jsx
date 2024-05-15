@@ -245,7 +245,7 @@ export function FormVTP({data}) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ tipo: 'vtp', ip: data.key, username: data.username, password: data.password, dominio: dominio
-        , password: password, mode: mode
+        , password2: password, mode: mode
        })
     })
     .then(response => response.json())
@@ -274,49 +274,76 @@ export function FormVTP({data}) {
     );
 }
 
-export function FormVLANS() {
+export function FormVLANS({data}) {
   const handleSubmit = (event) => {
     event.preventDefault(); 
     const numero = event.target.elements.numero.value;
     const nombre = event.target.elements.nombre.value;  
     console.log("VLAN:", numero);
     console.log("Nombre:", nombre);
+    CrearVlan(numero,nombre);
   };
 
-    return (
-      <div className='divConfiguraciones'>
-          <form onSubmit={handleSubmit}>                
-                <label htmlFor="numero">Ingresa el número de vlan</label>
-                <input type="text" name = 'numero'/>
-                <label htmlFor="nombre">Ingresa el nombre de la vlan</label>
-                <input type="text" name = 'nombre'/>
-                <button>Enviar</button>
-          </form>
-      </div>
-    );
+  const CrearVlan = (vlan, name) => {
+    return fetch("http://localhost:3001/api/config/vlan", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'vlan', ip: data.key, username: data.username, password: data.password, vlan: vlan
+        , nombre: name
+       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+    }
+      return (
+        <div className='divConfiguraciones'>
+            <form onSubmit={handleSubmit}>                
+                  <label htmlFor="numero">Ingresa el número de vlan</label>
+                  <input type="text" name = 'numero'/>
+                  <label htmlFor="nombre">Ingresa el nombre de la vlan</label>
+                  <input type="text" name = 'nombre'/>
+                  <button>Enviar</button>
+            </form>
+        </div>
+      );
 }
 
-export function FormIPRoute() {
+export function FormIPRoute({data}) {
   const handleSubmit = (event) => {
     event.preventDefault(); 
     const ip = event.target.elements.ip.value;
     const mask = event.target.elements.mask.value;
     const salidaip = event.target.elements.salidaip.value;
-    const intsalida = event.target.elements.intsalida.value;
-    
-    let command = '';
-    if (salidaip) {
-      command = `ip route ${ip} ${mask} ${salidaip}\n`;
-    } else if (intsalida) {
-      command = `ip route ${ip} ${mask} ${intsalida}\n`;
-    }
-    
     console.log("IP:", ip);
     console.log("Máscara:", mask);
     console.log("Salida IP:", salidaip);
-    console.log("Interfaz de salida:", intsalida);
-    console.log("Comando:", command);
+    Ruta(ip, mask, salidaip)
   };
+  const Ruta = (ip, mask, salidaip) => {
+    return fetch("http://localhost:3001/api/config/route", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'route', ip: data.key, username: data.username, password: data.password, ip2: ip, mask: mask, salida: salidaip
+      
+       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+    }
 
   return (
     <div className='divConfiguraciones'>
@@ -330,9 +357,6 @@ export function FormIPRoute() {
         <label htmlFor="salidaip">Ingresa la dirección IP de salida</label>
         <input type="text" name="salidaip" placeholder="Ejemplo: 10.0.0.1"/>
         
-        <label htmlFor="intsalida">Ingresa la interfaz de salida</label>
-        <input type="text" name="intsalida" placeholder="Ejemplo: Serial0/1"/>
-        
         <button>Enviar</button>
       </form>
     </div>
@@ -340,7 +364,7 @@ export function FormIPRoute() {
 }
 
 
-export function FormNative() {
+export function FormNative({data}) {
   const handleSubmit = (event) => {
     event.preventDefault(); 
     const int = event.target.elements.interfaz.value;
@@ -362,7 +386,7 @@ export function FormNative() {
     );
 }
 
-export function FormAccessVlan() {
+export function FormAccessVlan({data}) {
   const handleSubmit = (event) => {
     event.preventDefault(); 
     const interfaz = event.target.elements.interfaz.value;
@@ -386,7 +410,7 @@ export function FormAccessVlan() {
   );
 }
 
-export function FormPortSecurityMax() {
+export function FormPortSecurityMax({data}) {
   const handleSubmit = (event) => {
     event.preventDefault(); 
     const interfaz = event.target.elements.interfaz.value;
@@ -410,7 +434,7 @@ export function FormPortSecurityMax() {
   );
 }
 
-export function FormPortSecurityType() {
+export function FormPortSecurityType({data}) {
   const handleSubmit = (event) => {
     event.preventDefault(); 
     const interfaz = event.target.elements.interfaz.value;
@@ -434,7 +458,7 @@ export function FormPortSecurityType() {
   );
 }
 
-export function FormPortSecurityViolation() {
+export function FormPortSecurityViolation({data}) {
   const handleSubmit = (event) => {
     event.preventDefault(); 
     const interfaz = event.target.elements.interfaz.value;
@@ -458,7 +482,7 @@ export function FormPortSecurityViolation() {
   );
 }
 
-export function FormRoutInterVlan() {
+export function FormRoutInterVlan({data}) {
   const handleSubmit = (event) => {
     event.preventDefault(); 
     const subint = event.target.elements.subint.value;
@@ -472,6 +496,7 @@ export function FormRoutInterVlan() {
     console.log("Dirección IP:", ip);
     console.log("Máscara de subred:", mask);
   };
+  
 
   return (
     <div className='divConfiguraciones'>
@@ -497,13 +522,33 @@ export function FormRoutInterVlan() {
   );
 }
 
-export function FormDefaultGateway() {
+export function FormDefaultGateway({data}) {
   const handleSubmit = (event) => {
     event.preventDefault(); 
     const ip = event.target.elements.ip.value;
     console.log("Dirección IP del gateway por defecto:", ip);
+    DefaultGate(ip);
+    console.log(data)
   };
+  const DefaultGate = (ip) => {
+    return fetch("http://localhost:3001/api/config/default", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'default', ip: data.key, username: data.username, password: data.password, ip2: ip
+       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
 
+  };
+  
   return (
     <div className='divConfiguraciones'>
       <form onSubmit={handleSubmit}>                
@@ -514,7 +559,255 @@ export function FormDefaultGateway() {
       </form>
     </div>
   );
+
+
+  
 }
+
+export function Formlogging({data}) {
+  const handleSubmit = (event) => {
+    event.preventDefault(); 
+    const ip = event.target.elements.ip.value;
+    console.log("Direccion del servidor syslog:", ip);
+    SyslogServ(ip);
+  };
+  const SyslogServ = (ip) => {
+    return fetch("http://localhost:3001/api/config/logging", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'logging', ip: data.key, username: data.username, password: data.password, ip2: ip
+       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+
+  };
+  
+  return (
+    <div className='divConfiguraciones'>
+      <form onSubmit={handleSubmit}>                
+        <label htmlFor="ip">Ingresa la dirección IP del servidor syslog</label>
+        <input type="text" name="ip" placeholder="Ejemplo: 192.168.1.1"/>
+        
+        <button>Enviar</button>
+      </form>
+    </div>
+  );
+
+
+  
+}
+
+export function Formntp({data}) {
+  const handleSubmit = (event) => {
+    event.preventDefault(); 
+    const ip = event.target.elements.ip.value;
+    console.log("Direccion del servidor ntp:", ip);
+    NTPserver(ip);
+  };
+  const NTPserver = (ip) => {
+    return fetch("http://localhost:3001/api/config/ntp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'ntp', ip: data.key, username: data.username, password: data.password, ip2: ip
+       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+
+  };
+  
+  return (
+    <div className='divConfiguraciones'>
+      <form onSubmit={handleSubmit}>                
+        <label htmlFor="ip">Ingresa la dirección IP del servidor ntp</label>
+        <input type="text" name="ip" placeholder="Ejemplo: 192.168.1.1"/>
+        
+        <button>Enviar</button>
+      </form>
+    </div>
+  );
+
+
+  
+}
+
+export function Formuser({data}) {
+  const handleSubmit = (event) => {
+    event.preventDefault(); 
+    const user = event.target.elements.user.value;
+    const password = event.target.elements.password.value;
+    console.log("Usuario:", user);
+    console.log("Pass:", password);
+    Username(user, password);
+  };
+  const Username = (user, password) => {
+    return fetch("http://localhost:3001/api/config/username", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'user', ip: data.key, username: data.username, password: data.password, user: user, password2: password
+       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+
+  };
+  
+  return (
+    <div className='divConfiguraciones'>
+      <form onSubmit={handleSubmit}>                
+        <label htmlFor="user">Ingresa el usuario</label>
+        <input type="text" name="user"/>
+        <label htmlFor="password">Ingresa la contraseña</label>
+        <input type="text" name="password"/>
+        
+        <button>Enviar</button>
+      </form>
+    </div>
+  );
+
+
+  
+}
+
+export function FormINTIP({data}) {
+  const handleSubmit = (event) => {
+    event.preventDefault(); 
+    const interfaz = event.target.elements.interfaz.value;
+    const ip = event.target.elements.ip.value;  
+    const mask = event.target.elements.mask.value;  
+    console.log("INT:", interfaz);
+    console.log("IP:", ip);
+    console.log("MASK:", mask);
+    IPINT(interfaz,ip,mask);
+  };
+
+  const IPINT = (interfaz,ip,mask) => {
+    return fetch("http://localhost:3001/api/config/intip", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'ipint', ip: data.key, username: data.username, password: data.password, interface: interfaz, ip2:ip, mask:mask
+       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+    }
+      return (
+        <div className='divConfiguraciones'>
+            <form onSubmit={handleSubmit}>                
+                  <label htmlFor="interfaz">Ingresa la interfaz</label>
+                  <input type="text" name = 'interfaz'/>
+                  <label htmlFor="ip">Ingresa la ip</label>
+                  <input type="text" name = 'ip'/>
+                  <label htmlFor="mask">Ingresa la mascara</label>
+                  <input type="text" name = 'mask'/>
+                  <button>Enviar</button>
+            </form>
+        </div>
+      );
+}
+
+
+export function FormSHUT({data}) {
+  const handleSubmit = (event) => {
+    event.preventDefault(); 
+    const interfaz = event.target.elements.interfaz.value;
+    console.log("INT:", interfaz);
+    SHUT(interfaz);
+  };
+
+  const SHUT = (interfaz) => {
+    return fetch("http://localhost:3001/api/config/shut", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'shut', ip: data.key, username: data.username, password: data.password, interface: interfaz
+       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+    }
+      return (
+        <div className='divConfiguraciones'>
+            <form onSubmit={handleSubmit}>                
+                  <label htmlFor="interfaz">Ingresa la interfaz</label>
+                  <input type="text" name = 'interfaz'/>
+                  <button>Enviar</button>
+            </form>
+        </div>
+      );
+}
+
+export function FormNOSHUT({data}) {
+  const handleSubmit = (event) => {
+    event.preventDefault(); 
+    const interfaz = event.target.elements.interfaz.value;
+    console.log("INT:", interfaz);
+    NOSHUT(interfaz);
+  };
+
+  const NOSHUT = (interfaz) => {
+    return fetch("http://localhost:3001/api/config/noshut", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tipo: 'noshut', ip: data.key, username: data.username, password: data.password, interface: interfaz
+       })
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+    }
+      return (
+        <div className='divConfiguraciones'>
+            <form onSubmit={handleSubmit}>                
+                  <label htmlFor="interfaz">Ingresa la interfaz</label>
+                  <input type="text" name = 'interfaz'/>
+                  <button>Enviar</button>
+            </form>
+        </div>
+      );
+}
+
 
 export default {
   FormHostname,
@@ -532,5 +825,11 @@ export default {
   FormPortSecurityType,
   FormPortSecurityViolation,
   FormRoutInterVlan,
-  FormDefaultGateway
+  FormDefaultGateway,
+  Formntp,
+  Formlogging,
+  Formuser,
+  FormINTIP,
+  FormSHUT,
+  FormNOSHUT
 };

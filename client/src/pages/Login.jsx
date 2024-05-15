@@ -52,7 +52,7 @@ function LoginPage() {
             <input type="text" value={user} onChange={(e) => setUser(e.target.value)} placeholder="Usuario"/>
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Contraseña"/>
             <p style={{display:'none'}} id="error"><i className="fa-solid fa-triangle-exclamation"></i> Datos Incorrectos</p>
-            <button>Iniciar Sesión</button>
+            <button className='botonInicio'>Iniciar Sesión</button>
           </form>
         </div>
       </div>

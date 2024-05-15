@@ -32,7 +32,6 @@ function Header() {
             </div>
             <div className="menu">
                 <a href="/">INICIO</a>
-                <a href="informacion">INFORMACIÓN</a>
                 {isLoggedIn ? (<a href="red" >RED</a>) : ""}
                 {isLoggedIn ? (<a href="/" onClick={CerrarSesion}>CERRAR SESIÓN</a>) : (<a href="iniciar-sesion">INICIAR SESIÓN</a>)}
             </div>

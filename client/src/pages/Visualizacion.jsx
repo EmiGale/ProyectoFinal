@@ -3,6 +3,7 @@ import go from 'gojs';
 import router from '../img/router-svgrepo-com.svg';
 import switchimg from '../img/switch-svgrepo-com.svg';
 import nube from '../img/cloud-svgrepo-com.svg';
+import errorImg from '../img/2753.png';
 
 import Loading from '../containers/Loading';
 import { FormHostname } from '../containers/Conf';
@@ -103,7 +104,12 @@ function Prueba() {
           nodeData = { key: deviceId, foot: deviceLabel, img: router, username: infoNodo.username, password: infoNodo.password, info: deviceInfo[0] };
         }
       } catch (error) {
-        nodeData = { key: deviceId, foot: "Internet", img: nube, info: ["Internet", "Internet", "", "", ""] };
+        if (deviceId == "148.239.61.210") {
+          nodeData = { key: deviceId, foot: "Internet", img: nube, info: ["Internet", "Internet", "", "", ""] };
+        }
+        else{
+          nodeData = { key: deviceId, foot: "Dispositivo desconocido", img: errorImg, info: ["?", "?", "", "", ""] };
+        }
       }
       diagram.model.addNodeData(nodeData);
     });
@@ -177,7 +183,18 @@ function Prueba() {
         setLoading(false);
       }
     };
+    const recargar = async () => {
+      try {
+        const json = await DetectarRed();
+        init(json);
+      } catch (error) {
+        // Manejar errores si es necesario
+      } 
+    };
+    const intervalId = setInterval(recargar, 100000);
     fetchData();
+    recargar()
+    return () => clearInterval(intervalId);
   }, []);
 
   function InterfazAbreviada(interfazCompleta) {

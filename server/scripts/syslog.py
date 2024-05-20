@@ -3,7 +3,7 @@ import json
 from email.message import EmailMessage
 import smtplib
 
-HOST = '192.168.10.11'
+HOST = '192.168.10.201'
 PORT = 514
 
 def maill(mensaje):

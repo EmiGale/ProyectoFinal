@@ -23,7 +23,7 @@ for dispositivo in configurator:
     try:
         dispositivo.connect()
         serialDispositivo = dispositivo.ver_Info()
-        dispositivo.logging('192.168.10.11')
+        dispositivo.logging('192.168.10.201')
 
         checar = len(dispositivo.ver_IP())
         if checar == 0:
